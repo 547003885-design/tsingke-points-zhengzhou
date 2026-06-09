@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>擎科生物郑州基地测序积分查询页面</title>
+<style>
+  :root {
+    --primary: #0b3d5c;
+    --primary-light: #1a6b8a;
+    --accent: #00b4a6;
+    --gold: #d4940e;
+    --gold-light: #fff3d6;
+    --silver: #8899aa;
+    --silver-light: #edf2f6;
+    --bronze: #c47b3b;
+    --bronze-light: #fdf2e7;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1a2332;
+    --text-secondary: #6b7788;
+    --border: #e8ecf1;
+    --danger: #e74c3c;
+    --success: #27ae60;
+    --tier-bronze-text: #8b6914;
+    --tier-silver-text: #445a6e;
+    --tier-gold-text: #8b5e00;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: linear-gradient(180deg, #e8edf5 0%, var(--bg) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .top-ribbon {
+    position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 10;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--gold), var(--accent), var(--primary));
+    background-size: 200% 200%;
+    animation: ribbonShift 6s ease-in-out infinite;
+  }
+  @keyframes ribbonShift {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .app { position: relative; z-index:1; max-width: 500px; margin: 0 auto; padding: 0 16px 40px; }
+
+  /* ========== 头部 ========== */
+  .hero {
+    text-align: center; padding: 40px 0 24px;
+  }
+  .hero .logo-icon {
+    width: 64px; height: 64px; border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 24px rgba(11,61,92,0.2);
+    font-size: 30px; color: white;
+  }
+  .hero h1 {
+    font-size: 22px; font-weight: 700; color: var(--primary);
+    letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .hero .subtitle {
+    font-size: 12px; color: var(--text-secondary); letter-spacing: 3px; font-weight: 500;
+  }
+
+  /* ========== 规则圆框 ========== */
+  .rules-wrap {
+    margin-bottom: 20px;
+  }
+  .rules-label {
+    text-align: center; font-size: 13px; font-weight: 700; color: var(--text);
+    margin-bottom: 14px; letter-spacing: 1px;
+  }
+  .tier-circles {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .tier-circle {
+    width: 118px;
+    height: 118px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 3px solid;
+    position: relative;
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: default;
+  }
+  .tier-circle:hover {
+    transform: translateY(-3px) scale(1.04);
+  }
+  .tier-circle.bronze {
+    background: linear-gradient(145deg, #fdf6f0, var(--bronze-light));
+    border-color: var(--bronze);
+    box-shadow: 0 4px 16px rgba(196,123,59,0.18);
+  }
+  .tier-circle.bronze:hover {
+    box-shadow: 0 8px 28px rgba(196,123,59,0.28);
+  }
+  .tier-circle.silver {
+    background: linear-gradient(145deg, #f8fbfd, var(--silver-light));
+    border-color: var(--silver);
+    box-shadow: 0 4px 16px rgba(136,153,170,0.18);
+  }
+  .tier-circle.silver:hover {
+    box-shadow: 0 8px 28px rgba(136,153,170,0.28);
+  }
+  .tier-circle.gold {
+    background: linear-gradient(145deg, #fffbeb, var(--gold-light));
+    border-color: var(--gold);
+    box-shadow: 0 4px 16px rgba(212,148,14,0.18);
+  }
+  .tier-circle.gold:hover {
+    box-shadow: 0 8px 28px rgba(212,148,14,0.28);
+  }
+  .tier-circle .tc-medal {
+    font-size: 22px;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .tier-circle .tc-name {
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+  }
+  .tier-circle.bronze .tc-name { color: var(--tier-bronze-text); }
+  .tier-circle.silver .tc-name { color: var(--tier-silver-text); }
+  .tier-circle.gold .tc-name { color: var(--tier-gold-text); }
+  .tier-circle .tc-range {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 1px;
+    font-weight: 500;
+  }
+  .tier-circle .tc-rate {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 1px;
+  }
+  .tier-circle.bronze .tc-rate { color: var(--bronze); }
+  .tier-circle.silver .tc-rate { color: var(--silver); }
+  .tier-circle.gold .tc-rate { color: var(--gold); }
+  .tier-circle .tc-count {
+    font-size: 9px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .rules-note {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .rules-note .rn-badge {
+    background: var(--card);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    color: var(--text);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  /* ========== 查询卡 ========== */
+  .query-card {
+    background: var(--card); border-radius: 16px; padding: 20px 16px 18px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04); margin-bottom: 16px;
+  }
+  .query-card .qc-title {
+    font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .query-card .qc-title .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .query-card .qc-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
+
+  .input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .input-row .input-col { flex: 1; }
+  .input-col input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 12px; font-size: 14px; color: var(--text); background: var(--bg);
+    outline: none; transition: all 0.2s;
+  }
+  .input-col input:focus { border-color: var(--primary-light); background: white; box-shadow: 0 0 0 3px rgba(26,107,138,0.06); }
+  .input-col input::placeholder { color: #bcc3ce; font-size: 13px; }
+  .input-col .field-label {
+    font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;
+  }
+  .input-col .field-label .req { color: var(--danger); }
+
+  .btn-primary {
+    width: 100%; border: none; border-radius: 12px; padding: 13px;
+    font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    color: white; transition: all 0.25s; box-shadow: 0 3px 12px rgba(11,61,92,0.15);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 5px 20px rgba(11,61,92,0.25); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .query-error { font-size: 11px; color: var(--danger); margin-top: 6px; display: none; }
+  .query-error.show { display: block; }
+
+  /* ========== 搜索结果 ========== */
+  .search-result { display: none; margin-bottom: 16px; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+  .search-result .sr-card {
+    background: linear-gradient(135deg, var(--primary), #0d4a6e);
+    border-radius: 16px; padding: 20px; color: white; text-align: center;
+    position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(11,61,92,0.2);
+  }
+  .search-result .sr-card::after {
+    content: ''; position: absolute; top: -40px; right: -40px; width: 120px; height: 120px;
+    background: rgba(255,255,255,0.04); border-radius: 50%;
+  }
+  .search-result .sr-rank {
+    display: inline-block; background: rgba(255,255,255,0.18); border-radius: 16px;
+    padding: 2px 12px; font-size: 11px; letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .search-result .sr-name { font-size: 20px; font-weight: 700; }
+  .search-result .sr-group { font-size: 12px; opacity: 0.6; margin-top: 2px; color: #fbbf24; }
+  .search-result .sr-dept { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+  .search-result .sr-stats {
+    display: flex; gap: 8px; margin-top: 14px;
+  }
+  .search-result .sr-stat {
+    flex: 1; background: rgba(255,255,255,0.12); border-radius: 12px; padding: 10px 6px;
+    text-align: center; backdrop-filter: blur(4px);
+  }
+  .search-result .sr-stat .val { font-size: 18px; font-weight: 700; }
+  .search-result .sr-stat .lbl { font-size: 10px; opacity: 0.6; margin-top: 1px; }
+  .search-result .sr-rate {
+    margin-top: 10px; padding: 6px 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.1); font-size: 12px;
+  }
+  .search-result .sr-actions {
+    display: flex; gap: 8px; margin-top: 10px;
+  }
+  .sr-actions .btn-sm {
+    flex: 1; border: none; border-radius: 10px; padding: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .sr-actions .btn-ex {
+    background: linear-gradient(135deg, var(--gold), #c4800a);
+    color: white;
+  }
+  .sr-actions .btn-cl {
+    background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8);
+  }
+
+  .no-result {
+    background: #fef9f0; border: 1px solid #f5e0b0; border-radius: 12px;
+    padding: 16px; text-align: center; color: #8a6d14; font-size: 13px;
+    display: none; margin-bottom: 16px;
+  }
+  .no-result.show { display: block; animation: fadeUp 0.35s ease; }
+
+  /* ========== 兑换说明 ========== */
+  .exchange-note {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .exchange-note .en-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .exchange-note .en-body {
+    font-size: 11px;
+  }
+
+  /* ========== 好运祝福 ========== */
+  .luck-line {
+    text-align: center; padding: 12px 0 16px; font-size: 13px;
+    color: #d4a574; letter-spacing: 3px; font-weight: 600;
+    animation: luckFade 3s ease-in-out infinite;
+  }
+  @keyframes luckFade {
+    0%,100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* ========== 底部 ========== */
+  .footer {
+    text-align: center; padding: 20px 0; font-size: 11px; color: #bcc3ce; line-height: 1.8;
+  }
+
+  /* ========== 兑换弹窗 ========== */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100;
+    align-items: flex-end; justify-content: center; }
+  .overlay.show { display: flex; }
+  .modal {
+    background: white; border-radius: 20px 20px 0 0; width: 100%; max-width: 500px;
+    max-height: 90vh; overflow-y: auto; padding: 8px 0 32px; animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 12px auto 16px; }
+  .modal-title { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px; }
+  .modal-body { padding: 0 20px; }
+  .modal-info {
+    background: var(--bg); border-radius: 12px; padding: 14px; margin-bottom: 16px;
+    font-size: 13px; color: var(--text-secondary); line-height: 1.8;
+  }
+  .modal-info strong { color: var(--text); }
+  .modal-info .highlight { color: var(--gold); font-weight: 700; font-size: 15px; }
+  .quick-btns { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .quick-btn {
+    border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 12px;
+    background: white; font-size: 13px; cursor: pointer; color: var(--text);
+    transition: all 0.2s; font-weight: 500;
+  }
+  .quick-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .quick-btn.active { background: var(--gold-light); border-color: var(--gold); color: var(--gold); font-weight: 700; }
+  .amount-wrap {
+    display: flex; align-items: center; background: var(--bg); border-radius: 12px;
+    border: 2px solid transparent; overflow: hidden; transition: all 0.2s; margin-bottom: 14px;
+  }
+  .amount-wrap:focus-within { border-color: var(--gold); background: white; }
+  .amount-wrap .prefix { padding: 12px 0 12px 14px; font-weight: 600; color: var(--text-secondary); }
+  .amount-wrap input {
+    flex: 1; border: none; outline: none; background: transparent;
+    padding: 12px; font-size: 17px; font-weight: 700; color: var(--text); min-width: 0;
+  }
+  .amount-wrap .suffix { padding: 12px 14px 12px 0; font-size: 13px; color: var(--text-secondary); }
+  .modal-error {
+    background: #fef2f2; color: var(--danger); border-radius: 10px; padding: 10px 12px;
+    font-size: 12px; margin-bottom: 12px; display: none;
+  }
+  .modal-error.show { display: block; }
+  .btn-confirm {
+    width: 100%; border: none; border-radius: 12px; padding: 14px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    background: linear-gradient(135deg, var(--accent), #00a090);
+    color: white; box-shadow: 0 3px 14px rgba(0,180,166,0.2);
+    transition: all 0.25s;
+  }
+  .btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .success-box { display: none; }
+  .success-icon {
+    width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--success), #1e8449);
+    margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; color: white; box-shadow: 0 4px 14px rgba(39,174,96,0.25);
+  }
+  .success-title { font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 2px; }
+  .success-sub { font-size: 12px; color: var(--text-secondary); text-align: center; margin-bottom: 16px; }
+  .code-box {
+    background: linear-gradient(135deg, #1a2332, #2c3e50); border-radius: 14px; padding: 16px;
+    text-align: center; margin-bottom: 14px;
+  }
+  .code-box .code-label { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; margin-bottom: 4px; }
+  .code-box .code-val {
+    font-size: 20px; font-weight: 800; color: var(--gold); letter-spacing: 2px;
+    font-family: "SF Mono", "Menlo", "Courier New", monospace; word-break: break-all;
+  }
+  .code-box .code-tip { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 6px; line-height: 1.5; }
+  .btn-copy, .btn-close {
+    width: 100%; border: none; border-radius: 12px; padding: 13px; font-size: 14px;
+    font-weight: 600; cursor: pointer; margin-bottom: 8px; transition: all 0.2s;
+  }
+  .btn-copy {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    color: white; box-shadow: 0 3px 12px rgba(11,61,92,0.15);
+  }
+  .btn-close { background: var(--bg); color: var(--text-secondary); }
+
+  /* ========== 情绪引导 ========== */
+  .emo-guide {
+    text-align: center; font-size: 11px; color: rgba(255,255,255,0.55);
+    margin-top: 10px; letter-spacing: 2px;
+    animation: guidePulse 2s ease-in-out infinite;
+  }
+  @keyframes guidePulse {
+    0%,100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  /* ========== 情绪按钮 ========== */
+  .sr-close-btn {
+    position: absolute; top: 10px; right: 14px; width: 28px; height: 28px;
+    border-radius: 50%; background: rgba(255,255,255,0.15); border: none;
+    color: rgba(255,255,255,0.7); font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; z-index: 2;
+    transition: all 0.2s;
+  }
+  .sr-close-btn:hover { background: rgba(255,255,255,0.3); color: white; }
+  .emo-actions {
+    display: flex; gap: 10px; margin-top: 12px;
+  }
+  .emo-btn {
+    flex: 1; border: none; border-radius: 14px; padding: 14px 8px;
+    font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .emo-btn .emo-icon { font-size: 28px; line-height: 1; }
+  .emo-btn .emo-label { font-size: 13px; }
+  .emo-btn.emo-lab {
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    color: #0369a1;
+    box-shadow: 0 3px 12px rgba(3,105,161,0.12);
+  }
+  .emo-btn.emo-paper {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+    box-shadow: 0 3px 12px rgba(146,64,14,0.10);
+  }
+  .emo-btn:hover { transform: translateY(-2px); }
+  .emo-btn:active { transform: translateY(0) scale(0.98); }
+  .emo-btn.emo-lab:hover { box-shadow: 0 6px 20px rgba(3,105,161,0.22); }
+  .emo-btn.emo-paper:hover { box-shadow: 0 6px 20px rgba(146,64,14,0.18); }
+  .emo-btn:not(.used) {
+    animation: emoBreath 2.5s ease-in-out infinite;
+  }
+  .emo-btn:hover {
+    animation: none;
+  }
+  @keyframes emoBreath {
+    0%,100% { box-shadow: 0 3px 12px rgba(0,0,0,0.10); }
+    50% { box-shadow: 0 4px 20px rgba(0,0,0,0.18); }
+  }
+  .emo-btn.used {
+    opacity: 0.35; filter: grayscale(0.6);
+    transform: scale(0.95);
+  }
+  .emo-btn.emo-pulse {
+    animation: emoBounce 0.6s ease;
+  }
+  @keyframes emoBounce {
+    0%,100% { transform: scale(1); }
+    30% { transform: scale(1.08); }
+    60% { transform: scale(0.96); }
+  }
+
+  /* ========== 情绪弹窗 ========== */
+  .emo-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 200; align-items: center; justify-content: center;
+  }
+  .emo-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .emo-modal {
+    background: white; border-radius: 24px; width: calc(100vw - 60px);
+    max-width: 380px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: emoPop 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  @keyframes emoPop {
+    from { opacity: 0; transform: scale(0.85) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .emo-modal .emo-svg-wrap {
+    padding: 28px 20px 16px; text-align: center;
+    min-height: 200px; display: flex; align-items: center; justify-content: center;
+  }
+  .emo-modal .emo-svg-wrap svg { width: 100%; max-width: 280px; height: auto; }
+  .emo-modal .emo-msg {
+    text-align: center; padding: 0 24px 6px;
+    font-size: 18px; font-weight: 700; color: var(--text);
+  }
+  .emo-modal .emo-sub {
+    text-align: center; padding: 0 24px 20px;
+    font-size: 12px; color: var(--text-secondary); line-height: 1.6;
+  }
+  .emo-modal .emo-close-btn {
+    width: 100%; border: none; border-top: 1px solid var(--border);
+    padding: 15px; font-size: 15px; font-weight: 700; cursor: pointer;
+    background: var(--bg); color: var(--primary);
+    border-radius: 0 0 24px 24px; transition: all 0.2s;
+  }
+  .emo-modal .emo-close-btn:hover { background: #e8edf5; }
+  .emo-modal .emo-close-btn:active { background: #dce3ed; }
+
+  /* ========== toast提示 ========== */
+  .emo-toast {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) translateY(20px);
+    background: rgba(0,0,0,0.85); color: #fff; padding: 14px 28px; border-radius: 24px;
+    font-size: 15px; font-weight: 600; letter-spacing: 1px; z-index: 9999;
+    opacity: 0; pointer-events: none; transition: all 0.35s ease;
+  }
+  .emo-toast.show { opacity: 1; transform: translate(-50%,-50%) translateY(0); }
+
+  /* ========== 响应式 ========== */
+  @media (max-width: 400px) {
+    .tier-circle {
+      width: 100px;
+      height: 100px;
+    }
+    .tier-circle .tc-medal { font-size: 18px; }
+    .tier-circle .tc-name { font-size: 11px; }
+    .tier-circle .tc-range { font-size: 9px; }
+    .tier-circle .tc-rate { font-size: 10px; }
+    .tier-circle .tc-count { font-size: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-ribbon"></div>
+
+<div class="app">
+
+  <!-- 头部 -->
+  <div class="hero">
+    <div class="logo-icon">🧬</div>
+    <h1>擎科生物郑州基地测序积分查询页面</h1>
+    <div class="subtitle">TSINGKE BIOTECH · 郑州基地</div>
+  </div>
+
+  <!-- 规则圆框 -->
+  <div class="rules-wrap" id="rulesWrap">
+    <div class="rules-label">📐 阶梯积分规则</div>
+    <div class="tier-circles" id="tierCircles"></div>
+    <div class="rules-note">
+      <span class="rn-badge" id="ruleThreshold">≥15反应上榜</span>
+      <span>📌 门槛：单周成功反应数 ≥ <span id="ruleNum">15</span> 才计入 · 无封顶</span>
+      <span>每周更新</span>
+    </div>
+  </div>
+
+  <!-- 查询卡片 -->
+  <div class="query-card" id="queryCard">
+    <div class="qc-title"><span class="dot"></span>查询我的积分</div>
+    <div class="qc-desc">姓名 + 邮箱验证，查找您的本周积分</div>
+
+    <div class="input-row">
+      <div class="input-col"><div class="field-label">姓名 <span class="req">*</span></div><input type="text" id="inputName" placeholder="真实姓名" autocomplete="name"></div>
+      <div class="input-col"><div class="field-label">邮箱 <span class="req">*</span></div><input type="email" id="inputEmail" placeholder="email@example.com" autocomplete="email"></div>
+    </div>
+
+    <button class="btn-primary" id="btnQuery" onclick="doQuery()">🔍 查询积分</button>
+    <div class="query-error" id="queryError"></div>
+  </div>
+
+  <!-- 搜索结果 -->
+  <div class="search-result" id="searchResult"></div>
+  <div class="no-result" id="noResult">😕 未找到匹配记录<br>请核对<strong>姓名</strong>和<strong>邮箱</strong></div>
+
+  <!-- 好运祝福 -->
+  <div class="luck-line">✨ 每次查询好运不断 ✨</div>
+
+  <!-- 兑换说明 -->
+  <div class="exchange-note">
+    <div class="en-title">兑换说明</div>
+    <div class="en-body">由片区销售统一提交积分兑换申请<br>可兑换等值实验耗材、礼品盲盒或抵扣下单 · 擎科生物郑州基地</div>
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">最终解释权归擎科生物所有</div>
+</div>
+
+<!-- 兑换弹窗 -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🧧 福袋兑换</div>
+    <div class="modal-body" id="exchangeFormBox">
+      <div class="modal-info" id="modalInfo"></div>
+      <div class="quick-btns" id="quickBtns"></div>
+      <div class="amount-wrap"><span class="prefix">🧧</span><input type="number" id="exchangeAmount" placeholder="输入积分数" min="1"><span class="suffix">积分</span></div>
+      <div class="modal-error" id="modalError"></div>
+      <button class="btn-confirm" id="btnConfirmExchange" onclick="submitExchange()">确认兑换</button>
+    </div>
+    <div class="modal-body success-box" id="exchangeSuccessBox">
+      <div class="success-icon">✓</div>
+      <div class="success-title">兑换成功！</div>
+      <div class="success-sub">已兑 <strong id="successPoints"></strong> 积分</div>
+      <div class="code-box">
+        <div class="code-label">唯一兑换码</div>
+        <div class="code-val" id="successCode"></div>
+        <div class="code-tip">请<span style="color:#f0a830">截图发送</span>给您的销售顾问<br>凭此码领取等值礼品</div>
+      </div>
+      <button class="btn-copy" onclick="copyCode()">📋 复制兑换信息</button>
+      <button class="btn-close" onclick="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 情绪弹窗 -->
+<div class="emo-overlay" id="emoOverlay" onclick="if(event.target===this)closeEmoModal()">
+  <div class="emo-modal" onclick="event.stopPropagation()">
+    <div class="emo-svg-wrap" id="emoSvgWrap"></div>
+    <div class="emo-msg" id="emoMsg"></div>
+    <div class="emo-sub" id="emoSub"></div>
+    <button class="emo-close-btn" onclick="closeEmoModal()">🌈 收下好运</button>
+  </div>
+</div>
+
+<!-- 情绪Toast提示 -->
+<div class="emo-toast" id="emoToast">下次查询有惊喜哦~</div>
+
+<script>var DATA = {
+  "generated_at": "2026-06-09 18:46",
+  "week": "2026年第23周",
+  "summary": {
+    "total_clients": 126,
+    "total_points": 3774.4,
+    "total_value": 3774.4,
+    "threshold": 15,
+    "point_rate": 1.0,
+    "tiers": [
+      {
+        "range": "15-200",
+        "rate": 0.5
+      },
+      {
+        "range": "201-400",
+        "rate": 0.7
+      },
+      {
+        "range": "401-+",
+        "rate": 1.0
+      }
+    ]
+  },
+  "clients": [
+    {
+      "rank": 1,
+      "name": "李鑫龙-s",
+      "group": "汤继华",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1093748575@qq.com",
+      "reactions": 421,
+      "points": 421.0,
+      "rate": 1.0,
+      "value": 421.0
+    },
+    {
+      "rank": 2,
+      "name": "邢烨",
+      "group": "苟明月",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "xingye97@163.com",
+      "reactions": 268,
+      "points": 187.6,
+      "rate": 0.7,
+      "value": 187.6
+    },
+    {
+      "rank": 3,
+      "name": "张延明",
+      "group": "汤继华",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1193747306@qq.com",
+      "reactions": 261,
+      "points": 182.7,
+      "rate": 0.7,
+      "value": 182.7
+    },
+    {
+      "rank": 4,
+      "name": "韩会阁",
+      "group": "韩会阁",
+      "sales": "郑州基地二区",
+      "dept": "河南省农业科学院烟草研究所",
+      "email": "hanhuihuige@163.com",
+      "reactions": 233,
+      "points": 163.1,
+      "rate": 0.7,
+      "value": 163.1
+    },
+    {
+      "rank": 5,
+      "name": "陈梦瑶-S",
+      "group": "苟明月",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "chenmengyao96@163.com",
+      "reactions": 214,
+      "points": 149.8,
+      "rate": 0.7,
+      "value": 149.8
+    },
+    {
+      "rank": 6,
+      "name": "严小兰",
+      "group": "汤继华",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "yanxl74@163.com",
+      "reactions": 206,
+      "points": 144.2,
+      "rate": 0.7,
+      "value": 144.2
+    },
+    {
+      "rank": 7,
+      "name": "刘洋",
+      "group": "汤继华",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1272390852@qq.com",
+      "reactions": 199,
+      "points": 99.5,
+      "rate": 0.5,
+      "value": 99.5
+    },
+    {
+      "rank": 8,
+      "name": "曹健生",
+      "group": "张学斌",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "1534987678@qq.com",
+      "reactions": 199,
+      "points": 99.5,
+      "rate": 0.5,
+      "value": 99.5
+    },
+    {
+      "rank": 9,
+      "name": "姚盼盼",
+      "group": "王俊",
+      "sales": "郑州基地二区",
+      "dept": "神农种业实验室",
+      "email": "soybean_shennong3@163.com",
+      "reactions": 152,
+      "points": 76.0,
+      "rate": 0.5,
+      "value": 76.0
+    },
+    {
+      "rank": 10,
+      "name": "姚亚克-不试做失败收费",
+      "group": "牧原宏信",
+      "sales": "郑州基地四区",
+      "dept": "河南兴华生物技术有限公司",
+      "email": "201035534@qq.com",
+      "reactions": 144,
+      "points": 72.0,
+      "rate": 0.5,
+      "value": 72.0
+    },
+    {
+      "rank": 11,
+      "name": "牛萌康",
+      "group": "周会娜",
+      "sales": "郑州基地四区",
+      "dept": "中国烟草总公司郑州烟草研究院",
+      "email": "mengk18887@163.com",
+      "reactions": 138,
+      "points": 69.0,
+      "rate": 0.5,
+      "value": 69.0
+    },
+    {
+      "rank": 12,
+      "name": "李明达-不试做",
+      "group": "霍毅欣",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "15011270156@163.com",
+      "reactions": 119,
+      "points": 59.5,
+      "rate": 0.5,
+      "value": 59.5
+    },
+    {
+      "rank": 13,
+      "name": "张聪",
+      "group": "宏信检测",
+      "sales": "郑州基地四区",
+      "dept": "河南宏信检测技术有限公司",
+      "email": "hnhxfgzdjc@163.com",
+      "reactions": 116,
+      "points": 58.0,
+      "rate": 0.5,
+      "value": 58.0
+    },
+    {
+      "rank": 14,
+      "name": "何洲",
+      "group": "嘉检医学",
+      "sales": "郑州基地三区",
+      "dept": "广州嘉检医学检测有限公司",
+      "email": "jiajian-zdssys@amcarelab.com.cn",
+      "reactions": 109,
+      "points": 54.5,
+      "rate": 0.5,
+      "value": 54.5
+    },
+    {
+      "rank": 15,
+      "name": "李天亮",
+      "group": "赵特",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "litianliang36@163.com",
+      "reactions": 105,
+      "points": 52.5,
+      "rate": 0.5,
+      "value": 52.5
+    },
+    {
+      "rank": 16,
+      "name": "胡俊亚",
+      "group": "武鹏",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "2310218808@qq.com",
+      "reactions": 105,
+      "points": 52.5,
+      "rate": 0.5,
+      "value": 52.5
+    },
+    {
+      "rank": 17,
+      "name": "罗兵",
+      "group": "河南宏信检测",
+      "sales": "郑州基地四区",
+      "dept": "河南宏信检测技术有限公司",
+      "email": "luobing1@muyuanfoods.com",
+      "reactions": 97,
+      "points": 48.5,
+      "rate": 0.5,
+      "value": 48.5
+    },
+    {
+      "rank": 18,
+      "name": "位曙光",
+      "group": "霍玉奇",
+      "sales": "郑州基地三区",
+      "dept": "郑州市第六人民医院（郑州市结核病防治所）",
+      "email": "1661064084@qq.com",
+      "reactions": 93,
+      "points": 46.5,
+      "rate": 0.5,
+      "value": 46.5
+    },
+    {
+      "rank": 19,
+      "name": "王旭燕",
+      "group": "陈敏",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "wxy15702658462@163.com",
+      "reactions": 91,
+      "points": 45.5,
+      "rate": 0.5,
+      "value": 45.5
+    },
+    {
+      "rank": 20,
+      "name": "周皓宇",
+      "group": "叶佑丕",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "hy-zhou17@tsinghua.org.cn",
+      "reactions": 79,
+      "points": 39.5,
+      "rate": 0.5,
+      "value": 39.5
+    },
+    {
+      "rank": 21,
+      "name": "韩艺文-不试做",
+      "group": "霍毅欣",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "hanyiwen@muyuanlab.com",
+      "reactions": 78,
+      "points": 39.0,
+      "rate": 0.5,
+      "value": 39.0
+    },
+    {
+      "rank": 22,
+      "name": "苗育梁",
+      "group": "牧原宏信",
+      "sales": "郑州基地四区",
+      "dept": "河南兴华生物技术有限公司",
+      "email": "1418717074@qq.com",
+      "reactions": 71,
+      "points": 35.5,
+      "rate": 0.5,
+      "value": 35.5
+    },
+    {
+      "rank": 23,
+      "name": "张港傲",
+      "group": "徐馨",
+      "sales": "郑州基地四区",
+      "dept": "中国烟草总公司郑州烟草研究院",
+      "email": "623045993@qq.com",
+      "reactions": 67,
+      "points": 33.5,
+      "rate": 0.5,
+      "value": 33.5
+    },
+    {
+      "rank": 24,
+      "name": "郭睿祺",
+      "group": "肖光辉",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "15511776676@163.com",
+      "reactions": 65,
+      "points": 32.5,
+      "rate": 0.5,
+      "value": 32.5
+    },
+    {
+      "rank": 25,
+      "name": "梁晓敏",
+      "group": "杨藏歌",
+      "sales": "郑州基地四区",
+      "dept": "东营市垦利牧原农牧有限公司",
+      "email": "646272943@qq.com",
+      "reactions": 64,
+      "points": 32.0,
+      "rate": 0.5,
+      "value": 32.0
+    },
+    {
+      "rank": 26,
+      "name": "李亚",
+      "group": "雷博",
+      "sales": "郑州基地三区",
+      "dept": "河南省人民医院",
+      "email": "1350722581@qq.com",
+      "reactions": 63,
+      "points": 31.5,
+      "rate": 0.5,
+      "value": 31.5
+    },
+    {
+      "rank": 27,
+      "name": "董浩哲",
+      "group": "霍毅欣",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "donghaozhe0607@163.com",
+      "reactions": 62,
+      "points": 31.0,
+      "rate": 0.5,
+      "value": 31.0
+    },
+    {
+      "rank": 28,
+      "name": "刘雨欣",
+      "group": "河南宏信检测",
+      "sales": "郑州基地四区",
+      "dept": "河南宏信检测技术有限公司",
+      "email": "1308458762@qq.com",
+      "reactions": 60,
+      "points": 30.0,
+      "rate": 0.5,
+      "value": 30.0
+    },
+    {
+      "rank": 29,
+      "name": "李可铖-不试做",
+      "group": "霍毅欣",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "372527883@qq.com",
+      "reactions": 58,
+      "points": 29.0,
+      "rate": 0.5,
+      "value": 29.0
+    },
+    {
+      "rank": 30,
+      "name": "梁飞",
+      "group": "张学斌",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "1264284076@qq.com",
+      "reactions": 56,
+      "points": 28.0,
+      "rate": 0.5,
+      "value": 28.0
+    },
+    {
+      "rank": 31,
+      "name": "黄晓静",
+      "group": "黄晓静",
+      "sales": "郑州基地二区",
+      "dept": "河南省农业科学院动物疫病防控研究所（河南省农业科学院动物免疫学重点实验室）",
+      "email": "hxjynl2017@163.com",
+      "reactions": 56,
+      "points": 28.0,
+      "rate": 0.5,
+      "value": 28.0
+    },
+    {
+      "rank": 32,
+      "name": "SawairaJadoon",
+      "group": "王俊",
+      "sales": "郑州基地二区",
+      "dept": "神农种业实验室",
+      "email": "sawairajadoon@163.com",
+      "reactions": 56,
+      "points": 28.0,
+      "rate": 0.5,
+      "value": 28.0
+    },
+    {
+      "rank": 33,
+      "name": "许默含",
+      "group": "郑向东",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "xmh08022023@163.com",
+      "reactions": 55,
+      "points": 27.5,
+      "rate": 0.5,
+      "value": 27.5
+    },
+    {
+      "rank": 34,
+      "name": "张建",
+      "group": "王强",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "zj13589043051@126.com",
+      "reactions": 54,
+      "points": 27.0,
+      "rate": 0.5,
+      "value": 27.0
+    },
+    {
+      "rank": 35,
+      "name": "郭世伦",
+      "group": "戴桂馥",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "16627664100@163.com",
+      "reactions": 51,
+      "points": 25.5,
+      "rate": 0.5,
+      "value": 25.5
+    },
+    {
+      "rank": 36,
+      "name": "付明雪",
+      "group": "何盛莲",
+      "sales": "郑州基地二区",
+      "dept": "河南省农业科学院",
+      "email": "1620545655@qq.com",
+      "reactions": 50,
+      "points": 25.0,
+      "rate": 0.5,
+      "value": 25.0
+    },
+    {
+      "rank": 37,
+      "name": "陈茜",
+      "group": "张学斌",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "18087480184@163.com",
+      "reactions": 50,
+      "points": 25.0,
+      "rate": 0.5,
+      "value": 25.0
+    },
+    {
+      "rank": 38,
+      "name": "武振东",
+      "group": "韩锁义",
+      "sales": "郑州基地二区",
+      "dept": "河南省作物分子育种研究院",
+      "email": "15090061080@163.com",
+      "reactions": 48,
+      "points": 24.0,
+      "rate": 0.5,
+      "value": 24.0
+    },
+    {
+      "rank": 39,
+      "name": "姚佳",
+      "group": "李继东",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "205239413@qq.com",
+      "reactions": 47,
+      "points": 23.5,
+      "rate": 0.5,
+      "value": 23.5
+    },
+    {
+      "rank": 40,
+      "name": "吴琪琪-s",
+      "group": "赵翔",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "wuqiqi9909@163.com",
+      "reactions": 46,
+      "points": 23.0,
+      "rate": 0.5,
+      "value": 23.0
+    },
+    {
+      "rank": 41,
+      "name": "解赛娅",
+      "group": "江秉华",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "x2036978394@163.com",
+      "reactions": 45,
+      "points": 22.5,
+      "rate": 0.5,
+      "value": 22.5
+    },
+    {
+      "rank": 42,
+      "name": "段培枫-不试做",
+      "group": "霍毅欣",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "15552074990@163.com",
+      "reactions": 44,
+      "points": 22.0,
+      "rate": 0.5,
+      "value": 22.0
+    },
+    {
+      "rank": 43,
+      "name": "胡可",
+      "group": "陆平利",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "840956557@qq.com",
+      "reactions": 43,
+      "points": 21.5,
+      "rate": 0.5,
+      "value": 21.5
+    },
+    {
+      "rank": 44,
+      "name": "翟瑶",
+      "group": "牧原宏信",
+      "sales": "郑州基地四区",
+      "dept": "河南兴华生物技术有限公司",
+      "email": "myjjjj123456782@163.com",
+      "reactions": 42,
+      "points": 21.0,
+      "rate": 0.5,
+      "value": 21.0
+    },
+    {
+      "rank": 45,
+      "name": "董迁迁",
+      "group": "杨丽荣",
+      "sales": "郑州基地二区",
+      "dept": "河南省农业科学院植物保护研究所",
+      "email": "444820270@qq.com",
+      "reactions": 41,
+      "points": 20.5,
+      "rate": 0.5,
+      "value": 20.5
+    },
+    {
+      "rank": 46,
+      "name": "张怡婷",
+      "group": "李营",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2745549160@qq.com",
+      "reactions": 41,
+      "points": 20.5,
+      "rate": 0.5,
+      "value": 20.5
+    },
+    {
+      "rank": 47,
+      "name": "周帅",
+      "group": "陈松",
+      "sales": "郑州基地三区",
+      "dept": "河南省人民医院",
+      "email": "237999718@qq.com",
+      "reactions": 41,
+      "points": 20.5,
+      "rate": 0.5,
+      "value": 20.5
+    },
+    {
+      "rank": 48,
+      "name": "黄婧h",
+      "group": "张学斌",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "591189294@qq.com",
+      "reactions": 40,
+      "points": 20.0,
+      "rate": 0.5,
+      "value": 20.0
+    },
+    {
+      "rank": 49,
+      "name": "刘凯璐",
+      "group": "李营-郑州",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2807495783@qq.com",
+      "reactions": 40,
+      "points": 20.0,
+      "rate": 0.5,
+      "value": 20.0
+    },
+    {
+      "rank": 50,
+      "name": "任怡冰",
+      "group": "张会勇",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "3108622919@qq.com",
+      "reactions": 38,
+      "points": 19.0,
+      "rate": 0.5,
+      "value": 19.0
+    },
+    {
+      "rank": 51,
+      "name": "李航雨",
+      "group": "肖光辉",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "2597374521@qq.com",
+      "reactions": 38,
+      "points": 19.0,
+      "rate": 0.5,
+      "value": 19.0
+    },
+    {
+      "rank": 52,
+      "name": "牛文斌",
+      "group": "李云河",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "483507198@qq.com",
+      "reactions": 38,
+      "points": 19.0,
+      "rate": 0.5,
+      "value": 19.0
+    },
+    {
+      "rank": 53,
+      "name": "丛俪娟",
+      "group": "张小敏",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "15842530635@163.com",
+      "reactions": 37,
+      "points": 18.5,
+      "rate": 0.5,
+      "value": 18.5
+    },
+    {
+      "rank": 54,
+      "name": "刘洁",
+      "group": "闫大伟",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "liujie19900115@yeah.net",
+      "reactions": 36,
+      "points": 18.0,
+      "rate": 0.5,
+      "value": 18.0
+    },
+    {
+      "rank": 55,
+      "name": "镐婉婷",
+      "group": "李云河",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "2518864368@qq.com",
+      "reactions": 35,
+      "points": 17.5,
+      "rate": 0.5,
+      "value": 17.5
+    },
+    {
+      "rank": 56,
+      "name": "谷雨佳",
+      "group": "蔡应繁",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "18096878639@163.com",
+      "reactions": 35,
+      "points": 17.5,
+      "rate": 0.5,
+      "value": 17.5
+    },
+    {
+      "rank": 57,
+      "name": "高慕洁",
+      "group": "邓传良",
+      "sales": "郑州基地四区",
+      "dept": "河南师范大学",
+      "email": "242648675@qq.com",
+      "reactions": 33,
+      "points": 16.5,
+      "rate": 0.5,
+      "value": 16.5
+    },
+    {
+      "rank": 58,
+      "name": "苑艺明",
+      "group": "李玉玲",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "yym101204@163.com",
+      "reactions": 33,
+      "points": 16.5,
+      "rate": 0.5,
+      "value": 16.5
+    },
+    {
+      "rank": 59,
+      "name": "王佳音",
+      "group": "安国勇",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "1196378512@qq.com",
+      "reactions": 33,
+      "points": 16.5,
+      "rate": 0.5,
+      "value": 16.5
+    },
+    {
+      "rank": 60,
+      "name": "刘祎岚",
+      "group": "娄海伟",
+      "sales": "郑州基地三区",
+      "dept": "河南工业大学",
+      "email": "liuyilan0227@163.com",
+      "reactions": 33,
+      "points": 16.5,
+      "rate": 0.5,
+      "value": 16.5
+    },
+    {
+      "rank": 61,
+      "name": "牛风娇",
+      "group": "王桂凤",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2656303661@qq.com",
+      "reactions": 32,
+      "points": 16.0,
+      "rate": 0.5,
+      "value": 16.0
+    },
+    {
+      "rank": 62,
+      "name": "李甜甜",
+      "group": "郑向东",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "ltt3081114958@163.com",
+      "reactions": 32,
+      "points": 16.0,
+      "rate": 0.5,
+      "value": 16.0
+    },
+    {
+      "rank": 63,
+      "name": "岳毅",
+      "group": "李晟磊",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学第一附属医院",
+      "email": "yueyuedoc@163.com",
+      "reactions": 31,
+      "points": 15.5,
+      "rate": 0.5,
+      "value": 15.5
+    },
+    {
+      "rank": 64,
+      "name": "常亦昆",
+      "group": "万香波",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学第一附属医院",
+      "email": "1278100885@qq.com",
+      "reactions": 31,
+      "points": 15.5,
+      "rate": 0.5,
+      "value": 15.5
+    },
+    {
+      "rank": 65,
+      "name": "张文才",
+      "group": "河南宏信检测",
+      "sales": "郑州基地四区",
+      "dept": "河南宏信检测技术有限公司",
+      "email": "zhangwencai1@muyuanfoods.com",
+      "reactions": 30,
+      "points": 15.0,
+      "rate": 0.5,
+      "value": 15.0
+    },
+    {
+      "rank": 66,
+      "name": "陈梦娜-不试做",
+      "group": "霍毅欣",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "2061252265@qq.com",
+      "reactions": 30,
+      "points": 15.0,
+      "rate": 0.5,
+      "value": 15.0
+    },
+    {
+      "rank": 67,
+      "name": "张静",
+      "group": "张静",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "jing4098@163.com",
+      "reactions": 29,
+      "points": 14.5,
+      "rate": 0.5,
+      "value": 14.5
+    },
+    {
+      "rank": 68,
+      "name": "杨凯",
+      "group": "乌云塔娜",
+      "sales": "郑州基地二区",
+      "dept": "中国林业科学研究院经济林研究所",
+      "email": "3513636257@qq.com",
+      "reactions": 28,
+      "points": 14.0,
+      "rate": 0.5,
+      "value": 14.0
+    },
+    {
+      "rank": 69,
+      "name": "张婧娴",
+      "group": "魏勇军",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "1976029402@qq.com",
+      "reactions": 28,
+      "points": 14.0,
+      "rate": 0.5,
+      "value": 14.0
+    },
+    {
+      "rank": 70,
+      "name": "宋林虎",
+      "group": "杨建平",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "852947547@qq.com",
+      "reactions": 28,
+      "points": 14.0,
+      "rate": 0.5,
+      "value": 14.0
+    },
+    {
+      "rank": 71,
+      "name": "孔维秀",
+      "group": "刘文轩",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "kongwx0512@163.com",
+      "reactions": 28,
+      "points": 14.0,
+      "rate": 0.5,
+      "value": 14.0
+    },
+    {
+      "rank": 72,
+      "name": "邓鹏",
+      "group": "牧原宏信",
+      "sales": "郑州基地四区",
+      "dept": "河南兴华生物技术有限公司",
+      "email": "1092179357@qq.com",
+      "reactions": 28,
+      "points": 14.0,
+      "rate": 0.5,
+      "value": 14.0
+    },
+    {
+      "rank": 73,
+      "name": "崔鸿飞",
+      "group": "陆平利",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "xcuihf@163.com",
+      "reactions": 27,
+      "points": 13.5,
+      "rate": 0.5,
+      "value": 13.5
+    },
+    {
+      "rank": 74,
+      "name": "田雨纯",
+      "group": "苟明月",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "13703219077@163.com",
+      "reactions": 27,
+      "points": 13.5,
+      "rate": 0.5,
+      "value": 13.5
+    },
+    {
+      "rank": 75,
+      "name": "郭靖",
+      "group": "王桂凤",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "guojing202112@163.com",
+      "reactions": 26,
+      "points": 13.0,
+      "rate": 0.5,
+      "value": 13.0
+    },
+    {
+      "rank": 76,
+      "name": "赵永财",
+      "group": "肖光辉",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "1060355297@qq.com",
+      "reactions": 25,
+      "points": 12.5,
+      "rate": 0.5,
+      "value": 12.5
+    },
+    {
+      "rank": 77,
+      "name": "赵燕群",
+      "group": "赵燕群",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "552446891@qq.com",
+      "reactions": 25,
+      "points": 12.5,
+      "rate": 0.5,
+      "value": 12.5
+    },
+    {
+      "rank": 78,
+      "name": "陈佳",
+      "group": "万香波",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学第一附属医院",
+      "email": "chenjia6457@163.com",
+      "reactions": 25,
+      "points": 12.5,
+      "rate": 0.5,
+      "value": 12.5
+    },
+    {
+      "rank": 79,
+      "name": "陈建",
+      "group": "陈建",
+      "sales": "郑州基地四区",
+      "dept": "河南科技大学",
+      "email": "t1033866599@qq.com",
+      "reactions": 24,
+      "points": 12.0,
+      "rate": 0.5,
+      "value": 12.0
+    },
+    {
+      "rank": 80,
+      "name": "苗润萱",
+      "group": "肖光辉",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "2023945050@qq.com",
+      "reactions": 24,
+      "points": 12.0,
+      "rate": 0.5,
+      "value": 12.0
+    },
+    {
+      "rank": 81,
+      "name": "孙冉冉",
+      "group": "陈鲤翔",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "1764776385@qq.com",
+      "reactions": 24,
+      "points": 12.0,
+      "rate": 0.5,
+      "value": 12.0
+    },
+    {
+      "rank": 82,
+      "name": "赵育蓉",
+      "group": "朱平平",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "1399686128@qq.com",
+      "reactions": 23,
+      "points": 11.5,
+      "rate": 0.5,
+      "value": 11.5
+    },
+    {
+      "rank": 83,
+      "name": "马恒恒",
+      "group": "河南宏信检测",
+      "sales": "郑州基地四区",
+      "dept": "河南宏信检测技术有限公司",
+      "email": "3267678448@qq.com",
+      "reactions": 22,
+      "points": 11.0,
+      "rate": 0.5,
+      "value": 11.0
+    },
+    {
+      "rank": 84,
+      "name": "刘康林",
+      "group": "王俊",
+      "sales": "郑州基地二区",
+      "dept": "神农种业实验室",
+      "email": "soybean_shennong6@163.com",
+      "reactions": 22,
+      "points": 11.0,
+      "rate": 0.5,
+      "value": 11.0
+    },
+    {
+      "rank": 85,
+      "name": "沈隽韬",
+      "group": "王莹莹",
+      "sales": "郑州基地三区",
+      "dept": "河南工业大学",
+      "email": "2548085178@qq.com",
+      "reactions": 21,
+      "points": 10.5,
+      "rate": 0.5,
+      "value": 10.5
+    },
+    {
+      "rank": 86,
+      "name": "杨迅",
+      "group": "刘文轩",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2144529874@qq.com",
+      "reactions": 21,
+      "points": 10.5,
+      "rate": 0.5,
+      "value": 10.5
+    },
+    {
+      "rank": 87,
+      "name": "刘鑫荣",
+      "group": "邓传良",
+      "sales": "郑州基地四区",
+      "dept": "河南师范大学",
+      "email": "3156529115@qq.com",
+      "reactions": 21,
+      "points": 10.5,
+      "rate": 0.5,
+      "value": 10.5
+    },
+    {
+      "rank": 88,
+      "name": "席烜朝",
+      "group": "胡斌",
+      "sales": "郑州基地四区",
+      "dept": "河南科技学院",
+      "email": "2433014104@qq.com",
+      "reactions": 21,
+      "points": 10.5,
+      "rate": 0.5,
+      "value": 10.5
+    },
+    {
+      "rank": 89,
+      "name": "刘若晴",
+      "group": "安光辉",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1255204778@qq.com",
+      "reactions": 20,
+      "points": 10.0,
+      "rate": 0.5,
+      "value": 10.0
+    },
+    {
+      "rank": 90,
+      "name": "周小杰",
+      "group": "李新生",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1397166142@qq.com",
+      "reactions": 20,
+      "points": 10.0,
+      "rate": 0.5,
+      "value": 10.0
+    },
+    {
+      "rank": 91,
+      "name": "周旭娜",
+      "group": "丁俊强",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1559495742@qq.com",
+      "reactions": 19,
+      "points": 9.5,
+      "rate": 0.5,
+      "value": 9.5
+    },
+    {
+      "rank": 92,
+      "name": "王梦",
+      "group": "郑旭",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2771514077@qq.com",
+      "reactions": 19,
+      "points": 9.5,
+      "rate": 0.5,
+      "value": 9.5
+    },
+    {
+      "rank": 93,
+      "name": "王俊阳",
+      "group": "王俊阳",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "wangjunyang@zzu.edu.cn",
+      "reactions": 19,
+      "points": 9.5,
+      "rate": 0.5,
+      "value": 9.5
+    },
+    {
+      "rank": 94,
+      "name": "张银鸽",
+      "group": "杨丽荣",
+      "sales": "郑州基地二区",
+      "dept": "河南省农业科学院植物保护研究所",
+      "email": "diy907483139@163.com",
+      "reactions": 19,
+      "points": 9.5,
+      "rate": 0.5,
+      "value": 9.5
+    },
+    {
+      "rank": 95,
+      "name": "周梦菡",
+      "group": "韩世充",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1962635444@qq.com",
+      "reactions": 19,
+      "points": 9.5,
+      "rate": 0.5,
+      "value": 9.5
+    },
+    {
+      "rank": 96,
+      "name": "邢凯迪",
+      "group": "王强",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "1428537771@qq.com",
+      "reactions": 19,
+      "points": 9.5,
+      "rate": 0.5,
+      "value": 9.5
+    },
+    {
+      "rank": 97,
+      "name": "任月明",
+      "group": "刘文轩",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "r18317591827@163.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 98,
+      "name": "李媛",
+      "group": "俞振纲",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "abcd18337990792@163.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 99,
+      "name": "马雨珠",
+      "group": "王风芹",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2468725659@qq.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 100,
+      "name": "赵晨阳",
+      "group": "苟明月",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1220993256@qq.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 101,
+      "name": "刘燕坤",
+      "group": "张科春",
+      "sales": "郑州基地四区",
+      "dept": "牧原实验室",
+      "email": "yankunliulyk@163.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 102,
+      "name": "焦珂梦",
+      "group": "那日松",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "j548654@163.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 103,
+      "name": "李毅娜",
+      "group": "武鹏",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "17837167607@163.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 104,
+      "name": "潘燕芊芊",
+      "group": "乌云塔娜",
+      "sales": "郑州基地二区",
+      "dept": "中国林业科学研究院经济林研究所",
+      "email": "862716442@qq.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 105,
+      "name": "谢小东",
+      "group": "谢小东",
+      "sales": "郑州基地四区",
+      "dept": "中国烟草总公司郑州烟草研究院",
+      "email": "dd-99@163.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 106,
+      "name": "黄亚娉",
+      "group": "赵翔",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "2021733894@qq.com",
+      "reactions": 18,
+      "points": 9.0,
+      "rate": 0.5,
+      "value": 9.0
+    },
+    {
+      "rank": 107,
+      "name": "张龙",
+      "group": "李会勇",
+      "sales": "郑州基地二区",
+      "dept": "河南省农业科学院",
+      "email": "651850826@qq.com",
+      "reactions": 17,
+      "points": 8.5,
+      "rate": 0.5,
+      "value": 8.5
+    },
+    {
+      "rank": 108,
+      "name": "王森浩",
+      "group": "郑向东",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "2574306489@qq.com",
+      "reactions": 17,
+      "points": 8.5,
+      "rate": 0.5,
+      "value": 8.5
+    },
+    {
+      "rank": 109,
+      "name": "王姚姚",
+      "group": "河南中源裕泽生物科技有限公司",
+      "sales": "郑州基地四区",
+      "dept": "河南中源裕泽生物科技有限公司",
+      "email": "2484750275@qq.com",
+      "reactions": 17,
+      "points": 8.5,
+      "rate": 0.5,
+      "value": 8.5
+    },
+    {
+      "rank": 110,
+      "name": "闫凯钰",
+      "group": "张继冉",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "3137868676@qq.com",
+      "reactions": 17,
+      "points": 8.5,
+      "rate": 0.5,
+      "value": 8.5
+    },
+    {
+      "rank": 111,
+      "name": "邢沛昀",
+      "group": "余立扬",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "xingpeiyun@163.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 112,
+      "name": "王兵阳",
+      "group": "苟明月",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "18639819005@163.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 113,
+      "name": "杨伟程",
+      "group": "杨路明",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2161566240@qq.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 114,
+      "name": "滕彬",
+      "group": "翟征远",
+      "sales": "郑州基地四区",
+      "dept": "中原食品实验室",
+      "email": "13939862168@163.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 115,
+      "name": "郭心如",
+      "group": "刘文成",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "luckygxr@163.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 116,
+      "name": "王笑冉",
+      "group": "苗明三",
+      "sales": "郑州基地二区",
+      "dept": "河南中医药大学",
+      "email": "18310638773@126.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 117,
+      "name": "李甜",
+      "group": "魏勇军-郑大",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "1430806846@qq.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 118,
+      "name": "褚梦晴",
+      "group": "王道杰",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "3033616397@qq.com",
+      "reactions": 16,
+      "points": 8.0,
+      "rate": 0.5,
+      "value": 8.0
+    },
+    {
+      "rank": 119,
+      "name": "刘官清",
+      "group": "王海娇",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "1844496970@qq.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    },
+    {
+      "rank": 120,
+      "name": "朱茂盛",
+      "group": "苟明月",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "2693973076@qq.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    },
+    {
+      "rank": 121,
+      "name": "王月季",
+      "group": "安光辉",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1318844756@qq.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    },
+    {
+      "rank": 122,
+      "name": "盛亚蕊",
+      "group": "王庆东",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "15238529781@163.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    },
+    {
+      "rank": 123,
+      "name": "陶雪茹",
+      "group": "唐文帅",
+      "sales": "郑州基地三区",
+      "dept": "郑州大学",
+      "email": "2147355589@qq.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    },
+    {
+      "rank": 124,
+      "name": "程艳红",
+      "group": "苟明月",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1985453225@qq.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    },
+    {
+      "rank": 125,
+      "name": "陈雨桐",
+      "group": "杨路明",
+      "sales": "郑州基地二区",
+      "dept": "河南农业大学",
+      "email": "1799648397@qq.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    },
+    {
+      "rank": 126,
+      "name": "张海晴",
+      "group": "曹更生",
+      "sales": "郑州基地一区",
+      "dept": "河南大学",
+      "email": "784725753@qq.com",
+      "reactions": 15,
+      "points": 7.5,
+      "rate": 0.5,
+      "value": 7.5
+    }
+  ]
+};</script>
+
+<script>
+// ========== 初始化 ==========
+(function init() {
+  if (!window.DATA) {
+    document.getElementById('queryCard').innerHTML =
+      '<div style="text-align:center;padding:20px;color:#e74c3c;">⚠️ 数据加载失败，请刷新</div>';
+    return;
+  }
+  var s = DATA.summary;
+  var tiers = s.tiers || [];
+  var clients = DATA.clients || [];
+
+  // 按档位统计人数
+  var tierCounts = [];
+  for (var t = 0; t < tiers.length; t++) {
+    var parts = tiers[t].range.split('-');
+    var lo = parseInt(parts[0]);
+    var hi = parts[1] === '+' ? 999999 : parseInt(parts[1]);
+    var count = 0;
+    for (var i = 0; i < clients.length; i++) {
+      if (clients[i].reactions >= lo && clients[i].reactions <= hi) count++;
+    }
+    tierCounts.push(count);
+  }
+
+  // 渲染三个圆框
+  var colors = ['bronze', 'silver', 'gold'];
+  var medals = ['🧬', '🔬', '🏆'];
+  var names = ['科研能手', '科研先锋', '科研领航者'];
+  var html = '';
+  for (var i = 0; i < tiers.length; i++) {
+    var rangeLabel = tiers[i].range.replace('-+', '+');
+    html += '<div class="tier-circle ' + colors[i] + '">';
+    html += '<span class="tc-medal">' + medals[i] + '</span>';
+    html += '<span class="tc-name">' + names[i] + '</span>';
+    html += '<span class="tc-range">' + rangeLabel + '反应</span>';
+    html += '<span class="tc-rate">×' + tiers[i].rate + '分/个</span>';
+    html += '<span class="tc-count">' + tierCounts[i] + '人</span>';
+    html += '</div>';
+  }
+  document.getElementById('tierCircles').innerHTML = html;
+  document.getElementById('ruleNum').textContent = s.threshold || 15;
+})();
+
+// ========== 查询 ==========
+function doQuery() {
+  var name = document.getElementById('inputName').value.trim();
+  var email = document.getElementById('inputEmail').value.trim();
+  var errEl = document.getElementById('queryError');
+  var valid = true;
+
+  if (!name) { errEl.textContent = '请输入姓名'; errEl.classList.add('show'); valid = false; }
+  else if (!email) { errEl.textContent = '请输入邮箱'; errEl.classList.add('show'); valid = false; }
+  else { errEl.classList.remove('show'); }
+  if (!valid) return;
+
+  var clients = DATA.clients || [];
+  var matched = null;
+  var nameLower = name.toLowerCase();
+  var emailLower = email.toLowerCase();
+  for (var i = 0; i < clients.length; i++) {
+    var c = clients[i];
+    var cName = (c.name || '').toLowerCase();
+    var cEmail = (c.email || '').toLowerCase();
+    // 姓名：双向模糊匹配
+    var nameMatch = cName.indexOf(nameLower) !== -1 || nameLower.indexOf(cName) !== -1;
+    // 邮箱：记录有邮箱→精确匹配；记录没邮箱→跳过邮箱验证
+    var emailMatch = cEmail ? (cEmail === emailLower) : true;
+    if (nameMatch && emailMatch) {
+      matched = c; break;
+    }
+  }
+
+  var noResult = document.getElementById('noResult');
+  var searchResult = document.getElementById('searchResult');
+
+  if (!matched) {
+    noResult.classList.add('show');
+    searchResult.style.display = 'none';
+    return;
+  }
+  noResult.classList.remove('show');
+  renderSearchResult(matched);
+}
+
+function renderSearchResult(client) {
+  var exchanged = getExchangedTotal(client.name);
+  var remain = client.points - exchanged;
+  var allExchanged = remain <= 0;
+  var r = document.getElementById('searchResult');
+
+  // 重置情绪按钮状态（新查询，可以重新点）
+  emoClickedThisQuery = false;
+  emoJustClicked = null;
+
+  var tierEmoji = client.rate >= 1.0 ? '🏆' : (client.rate >= 0.7 ? '🔬' : '🧬');
+  var tierName = client.rate >= 1.0 ? '科研领航者' : (client.rate >= 0.7 ? '科研先锋' : '科研能手');
+
+  var html = '<div class="sr-card">';
+  html += '<button class="sr-close-btn" onclick="clearSearch()">✕</button>';
+  html += '<div class="sr-rank">' + tierEmoji + ' No.' + client.rank + ' · ' + tierName + '</div>';
+  html += '<div class="sr-name">' + escapeHtml(client.name) + '</div>';
+  html += '<div class="sr-group">课题组：' + escapeHtml(client.group || '') + '</div>';
+  html += '<div class="sr-dept">' + escapeHtml(client.dept || '') + '</div>';
+  html += '<div class="sr-stats">';
+  html += '<div class="sr-stat"><div class="val">' + client.reactions + '</div><div class="lbl">成功反应数</div></div>';
+  html += '<div class="sr-stat"><div class="val">' + client.points + '</div><div class="lbl">获得积分</div></div>';
+  html += '<div class="sr-stat"><div class="val">×' + client.rate + '</div><div class="lbl">积分系数</div></div>';
+  html += '</div>';
+  // 有实际兑换记录才显示兑换行
+  if (exchanged > 0) {
+    html += '<div class="sr-rate">📊 ' + tierEmoji + ' ×' + client.rate + '分/个 · 已兑' + exchanged + '分 · 剩余' + remain.toFixed(2) + '分</div>';
+  } else {
+    html += '<div class="sr-rate">📊 ' + tierEmoji + ' ×' + client.rate + '分/个 · 积分' + client.points + '分</div>';
+  }
+  html += '<div class="emo-guide">✨ 点一下，接收好运</div>';
+  html += '<div class="emo-actions">';
+  html += '<button class="emo-btn emo-lab" onclick="showEmoCard(\'lab\', this)"><span class="emo-icon">🧬</span><span class="emo-label">实验顺利</span></button>';
+  html += '<button class="emo-btn emo-paper" onclick="showEmoCard(\'paper\', this)"><span class="emo-icon">📄</span><span class="emo-label">文章必中</span></button>';
+  html += '</div></div>';
+  r.innerHTML = html;
+  r.style.display = 'block';
+  r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function clearSearch() {
+  document.getElementById('searchResult').style.display = 'none';
+  document.getElementById('noResult').classList.remove('show');
+  document.getElementById('inputName').value = '';
+  document.getElementById('inputEmail').value = '';
+}
+
+// ========== 兑换 ==========
+var currentClient = null;
+function openExchange(name) {
+  var clients = DATA.clients;
+  for (var i = 0; i < clients.length; i++) {
+    if (clients[i].name === name) { currentClient = clients[i]; break; }
+  }
+  if (!currentClient) return;
+  var exchanged = getExchangedTotal(currentClient.name);
+  var remain = currentClient.points - exchanged;
+
+  document.getElementById('modalInfo').innerHTML =
+    '<div>👤 <strong>' + escapeHtml(currentClient.name) + '</strong></div>' +
+    '<div>🏛️ ' + escapeHtml(currentClient.dept || '-') + '</div>' +
+    '<div>🔢 ' + currentClient.reactions + '反应 · ×' + currentClient.rate + '分/个</div>' +
+    '<div>🧧 可用：<span class="highlight">' + remain.toFixed(2) + '</span>分</div>';
+
+  var qHtml = '';
+  var amts = [Math.floor(remain/2), Math.floor(remain/4), Math.floor(remain)];
+  for (var j = 0; j < amts.length; j++) {
+    if (amts[j] > 0) qHtml += '<button class="quick-btn" onclick="setAmount(' + amts[j] + ')">兑' + amts[j] + '分</button>';
+  }
+  qHtml += '<button class="quick-btn" onclick="setAmount(' + Math.floor(remain) + ')">全部兑换</button>';
+  document.getElementById('quickBtns').innerHTML = qHtml;
+  document.getElementById('exchangeAmount').value = '';
+  document.getElementById('modalError').classList.remove('show');
+  document.getElementById('btnConfirmExchange').disabled = false;
+  document.getElementById('exchangeFormBox').style.display = 'block';
+  document.getElementById('exchangeSuccessBox').style.display = 'none';
+  document.getElementById('overlay').classList.add('show');
+}
+
+function setAmount(v) {
+  document.getElementById('exchangeAmount').value = v;
+  document.getElementById('modalError').classList.remove('show');
+  var btns = document.querySelectorAll('.quick-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.remove('active');
+    if (btns[i].textContent.indexOf(v) !== -1) btns[i].classList.add('active');
+  }
+}
+
+function closeModal() { document.getElementById('overlay').classList.remove('show'); }
+
+function generateCode() {
+  return 'XADNA-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+function submitExchange() {
+  if (!currentClient) return;
+  var amount = parseFloat(document.getElementById('exchangeAmount').value) || 0;
+  var exchanged = getExchangedTotal(currentClient.name);
+  var remain = currentClient.points - exchanged;
+  var errEl = document.getElementById('modalError');
+  if (amount <= 0) { errEl.textContent = '请输入有效积分数'; errEl.classList.add('show'); return; }
+  if (amount > remain) { errEl.textContent = '不能超过剩余' + remain.toFixed(2) + '分'; errEl.classList.add('show'); return; }
+
+  var code = generateCode();
+  var record = { code: code, amount: amount, time: new Date().toISOString(),
+    name: currentClient.name, dept: currentClient.dept || '', email: currentClient.email || '', week: DATA.week };
+
+  if (!exchangeCache[currentClient.name]) exchangeCache[currentClient.name] = { exchanged: 0, records: [] };
+  exchangeCache[currentClient.name].exchanged += amount;
+  exchangeCache[currentClient.name].records.push(record);
+  saveLocalExchange(currentClient.name, record);
+
+  document.getElementById('successPoints').textContent = amount;
+  document.getElementById('successCode').textContent = code;
+  document.getElementById('exchangeFormBox').style.display = 'none';
+  document.getElementById('exchangeSuccessBox').style.display = 'block';
+}
+
+function copyCode() {
+  var text = '【擎科生物一代测序积分兑换】\n兑换码：' + document.getElementById('successCode').textContent +
+    '\n客户：' + (currentClient ? currentClient.name : '') + '\n兑换积分：' + document.getElementById('successPoints').textContent + '分\n时间：' + new Date().toLocaleString('zh-CN');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      var b = document.querySelector('.btn-copy'); b.textContent = '✅ 已复制！';
+      setTimeout(function() { b.textContent = '📋 复制兑换信息'; }, 2000);
+    });
+  }
+}
+
+// ========== 本地存储 ==========
+var exchangeCache = {};
+function getStorageKey() { return 'tsingke_exch_' + (DATA && DATA.week ? DATA.week : 'default'); }
+function loadLocalExchanges(name) {
+  var key = getStorageKey();
+  try {
+    var data = JSON.parse(localStorage.getItem(key) || '{}');
+    var records = data[name] || [];
+    var exchanged = 0;
+    for (var i = 0; i < records.length; i++) exchanged += records[i].amount;
+    exchangeCache[name] = { exchanged: exchanged, records: records };
+    return exchangeCache[name];
+  } catch(e) { exchangeCache[name] = { exchanged: 0, records: [] }; return exchangeCache[name]; }
+}
+function saveLocalExchange(name, record) {
+  var key = getStorageKey();
+  var data = JSON.parse(localStorage.getItem(key) || '{}');
+  if (!data[name]) data[name] = [];
+  data[name].push(record);
+  localStorage.setItem(key, JSON.stringify(data));
+}
+function getExchangedTotal(name) {
+  if (exchangeCache[name]) return exchangeCache[name].exchanged;
+  return loadLocalExchanges(name).exchanged;
+}
+
+function escapeHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ========== 情绪卡片 ==========
+var EMO_SVGS = {
+  lab: [
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l1g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0284c7"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l1g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🧬</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">一合必达</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">序列完美，一次合成到位</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l2g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#6d28d9"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l2g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🧪</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">P不出错</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">PCR扩增条带清晰，一次到位</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l3g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#15803d"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l3g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🔬</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">稳稳当当</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">操作丝滑，结果稳定可靠</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l4g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l4g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">✨</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">一次成功</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">不用重做，实验一把过</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l5g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#f472b6"/><stop offset="100%" stop-color="#be185d"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l5g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🌈</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">数据漂亮</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">WB条带整齐，柱状图完美</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l6g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#67e8f9"/><stop offset="100%" stop-color="#0e7490"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l6g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🧫</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">细胞长得好</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">细胞状态饱满，分裂正常</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l7g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#c2410c"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l7g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">📊</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">柱状图满分</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">误差棒小，显著性三颗星</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l8g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#e879f9"/><stop offset="100%" stop-color="#a21caf"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l8g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🎯</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">靶点命中</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">敲低过表达，效果显著</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l9g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#1d4ed8"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l9g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">💧</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">不蒸发</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">体系配好，加样不漏</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="l10g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#6ee7b7"/><stop offset="100%" stop-color="#065f46"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#l10g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🧲</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">条带整齐</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">内参一致，趋势漂亮</text></svg>'
+  ],
+  paper: [
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p1g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#047857"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p1g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">📧</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">一审过</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">三位审稿人一致通过</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p2g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#b45309"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p2g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🏆</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">已接收</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">投哪中哪，编辑部的宠儿</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p3g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#f87171"/><stop offset="100%" stop-color="#b91c1c"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p3g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">📜</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">高分发表</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">IF 30+，课题组年度最佳</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p4g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#5b21b6"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p4g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🎓</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">顺利毕业</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">盲审全A，答辩评委起立鼓掌</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p5g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#ea580c"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p5g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🎉</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">喜报来</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">课题组喜讯连连，导师请客</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p6g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fcd34d"/><stop offset="100%" stop-color="#b45309"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p6g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🌟</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">封面文章</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">配图入选期刊封面</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p7g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0369a1"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p7g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">📝</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">秒回稿</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">修改意见少，两周返修</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p8g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fca5a5"/><stop offset="100%" stop-color="#dc2626"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p8g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🔥</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">高被引</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">发表半年即入选ESI</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p9g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#6d28d9"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p9g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">💡</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">创新满分</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">思路新颖，编辑亲自回信表扬</text></svg>',
+    '<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="p10g" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#db2777"/></radialGradient></defs><rect width="260" height="200" rx="16" fill="url(#p10g)"/><circle cx="130" cy="72" r="54" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/><text x="130" y="92" text-anchor="middle" font-size="60">🍾</text><text x="130" y="148" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">庆功宴</text><text x="130" y="172" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.7)">导师高兴，全组庆祝</text></svg>'
+  ]
+};
+
+var EMO_MSGS = {
+  lab: [
+    { msg: '一合必达', sub: '序列完美，一次合成到位' },
+    { msg: 'P不出错', sub: 'PCR扩增条带清晰，一次到位' },
+    { msg: '稳稳当当', sub: '操作丝滑，结果稳定可靠' },
+    { msg: '一次成功', sub: '不用重做，实验一把过' },
+    { msg: '数据漂亮', sub: 'WB条带整齐，柱状图完美' },
+    { msg: '细胞长得好', sub: '细胞状态饱满，分裂正常' },
+    { msg: '柱状图满分', sub: '误差棒小，显著性三颗星' },
+    { msg: '靶点命中', sub: '敲低过表达，效果显著' },
+    { msg: '不蒸发', sub: '体系配好，加样不漏' },
+    { msg: '条带整齐', sub: '内参一致，趋势漂亮' }
+  ],
+  paper: [
+    { msg: '一审过', sub: '三位审稿人一致通过' },
+    { msg: '已接收', sub: '投哪中哪，编辑部的宠儿' },
+    { msg: '高分发表', sub: 'IF 30+，课题组年度最佳' },
+    { msg: '顺利毕业', sub: '盲审全A，答辩评委起立鼓掌' },
+    { msg: '喜报来', sub: '课题组喜讯连连，导师请客' },
+    { msg: '封面文章', sub: '配图入选期刊封面' },
+    { msg: '秒回稿', sub: '修改意见少，两周返修' },
+    { msg: '高被引', sub: '发表半年即入选ESI' },
+    { msg: '创新满分', sub: '思路新颖，编辑亲自回信表扬' },
+    { msg: '庆功宴', sub: '导师高兴，全组庆祝' }
+  ]
+};
+
+var emoJustClicked = null;
+var emoClickedThisQuery = false;  // 本次查询是否已点过
+
+function showEmoCard(type, btn) {
+  // 本次查询已经点过了 → 提示
+  if (emoClickedThisQuery) {
+    showToast('下次查询有惊喜哦~');
+    return;
+  }
+  // 已经选了就拦截（不允许同一次点两个）
+  if (emoJustClicked && emoJustClicked !== type) return;
+
+  emoClickedThisQuery = true;  // 标记已点
+
+  // 灰掉另一个按钮
+  var allBtns = btn.parentElement.querySelectorAll('.emo-btn');
+  for (var i = 0; i < allBtns.length; i++) {
+    allBtns[i].classList.remove('used', 'emo-pulse');
+    allBtns[i].classList.add('used');  // 两个都灰掉
+  }
+  btn.classList.add('emo-pulse');
+  emoJustClicked = type;
+
+  // 随机抽一张
+  var idx = Math.floor(Math.random() * EMO_SVGS[type].length);
+  document.getElementById('emoSvgWrap').innerHTML = EMO_SVGS[type][idx];
+  document.getElementById('emoMsg').textContent = EMO_MSGS[type][idx].msg;
+  document.getElementById('emoSub').textContent = EMO_MSGS[type][idx].sub;
+  document.getElementById('emoOverlay').classList.add('show');
+}
+
+function closeEmoModal() {
+  document.getElementById('emoOverlay').classList.remove('show');
+}
+
+function showToast(msg) {
+  var t = document.getElementById('emoToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2000);
+}
+
+// 回车
+var inputName = document.getElementById('inputName');
+var inputEmail = document.getElementById('inputEmail');
+if (inputName) inputName.addEventListener('keydown', function(e) { if (e.key==='Enter') inputEmail.focus(); });
+if (inputEmail) inputEmail.addEventListener('keydown', function(e) { if (e.key==='Enter') doQuery(); });
+</script>
+</body>
+</html>

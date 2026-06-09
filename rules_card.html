@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>擎科生物 · 一代测序积分规则</title>
+<style>
+  :root {
+    --primary: #0b3d5c;
+    --primary-light: #1a6b8a;
+    --accent: #00b4a6;
+    --gold: #d4940e;
+    --gold-light: #fff8e7;
+    --bg: #f5f8fc;
+    --card: #ffffff;
+    --text: #1a2332;
+    --text-secondary: #6b7788;
+    --border: #e8ecf1;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #e8edf5;
+    display: flex; justify-content: center; align-items: flex-start;
+    min-height: 100vh; padding: 20px;
+  }
+  .card {
+    width: 375px;
+    background: linear-gradient(180deg, #0b3d5c 0%, #0f4a6e 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(11,61,92,0.25);
+  }
+
+  /* ===== 头部 ===== */
+  .header {
+    padding: 28px 24px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  }
+  .header .subtitle {
+    font-size: 11px; letter-spacing: 4px; color: rgba(255,255,255,0.55);
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .header h1 {
+    font-size: 22px; font-weight: 800; color: white;
+    letter-spacing: 2px; line-height: 1.4;
+  }
+  .header .tagline {
+    font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  /* ===== 内容区 ===== */
+  .body {
+    background: var(--bg); padding: 24px 20px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  /* 规则卡片 */
+  .section-title {
+    font-size: 13px; font-weight: 700; color: var(--primary);
+    letter-spacing: 2px; margin-bottom: 14px; text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .section-title::before, .section-title::after {
+    content: ''; width: 24px; height: 1px; background: #dde2ea;
+  }
+
+  /* 三档 */
+  .tiers {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .tier-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; border-radius: 14px;
+    background: white;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    transition: transform 0.2s;
+  }
+  .tier-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .tier-icon.gold { background: #fff3d6; }
+  .tier-icon.silver { background: #edf2f6; }
+  .tier-icon.bronze { background: #fdf2e7; }
+  .tier-body { flex: 1; min-width: 0; }
+  .tier-name {
+    font-size: 14px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 6px; margin-bottom: 3px;
+  }
+  .tier-multiplier {
+    font-size: 11px; padding: 2px 8px; border-radius: 6px;
+    font-weight: 700; letter-spacing: 0.5px;
+  }
+  .tier-multiplier.gold { background: #fff3d6; color: #8b5e00; }
+  .tier-multiplier.silver { background: #edf2f6; color: #445a6e; }
+  .tier-multiplier.bronze { background: #fdf2e7; color: #8b6914; }
+  .tier-range {
+    font-size: 11px; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .tier-example {
+    font-size: 11px; color: var(--accent); font-weight: 600;
+    margin-top: 2px;
+  }
+  .tier-ratio {
+    font-size: 18px; font-weight: 800; color: var(--primary);
+    flex-shrink: 0; width: 42px; text-align: center;
+  }
+
+  /* 关键信息 */
+  .key-info {
+    background: white; border-radius: 14px; padding: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04); margin-bottom: 16px;
+  }
+  .key-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 0; font-size: 13px;
+  }
+  .key-row + .key-row { border-top: 1px solid #f0f2f5; }
+  .key-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .key-dot.pri { background: var(--primary); }
+  .key-dot.gold { background: var(--gold); }
+  .key-dot.acc { background: var(--accent); }
+
+  /* 本周数据 */
+  .this-week {
+    background: linear-gradient(135deg, #0b3d5c, #1a6b8a);
+    border-radius: 14px; padding: 16px;
+    margin-bottom: 16px;
+    display: flex; justify-content: space-around;
+    text-align: center;
+  }
+  .tw-item { color: white; }
+  .tw-value { font-size: 24px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .tw-label { font-size: 11px; opacity: 0.7; letter-spacing: 1px; }
+
+  /* 二维码 */
+  .qr-section {
+    background: white; border-radius: 14px; padding: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .qr-img { width: 80px; height: 80px; border-radius: 6px; flex-shrink: 0; }
+  .qr-text h4 {
+    font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px;
+  }
+  .qr-text p {
+    font-size: 11px; color: var(--text-secondary); line-height: 1.6;
+  }
+
+  /* 底部 */
+  .footer {
+    text-align: center; padding: 16px 20px 24px;
+    font-size: 10px; color: #bcc3ce; letter-spacing: 1px;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- 头部 -->
+  <div class="header">
+    <div class="subtitle">TSINGKE BIOTECH · ZHENGZHOU</div>
+    <h1>一代测序<br>积分规则</h1>
+    <div class="tagline">单周成功反应数达标即享积分 · 可兑换好礼</div>
+  </div>
+
+  <!-- 内容 -->
+  <div class="body">
+
+    <!-- 规则标题 -->
+    <div class="section-title">📐 阶梯积分规则</div>
+
+    <!-- 三档 -->
+    <div class="tiers">
+      <div class="tier-card">
+        <div class="tier-icon bronze">🧬</div>
+        <div class="tier-body">
+          <div class="tier-name">科研能手 <span class="tier-multiplier bronze">×0.5</span></div>
+          <div class="tier-range">📊 单周 15 ~ 200 反应</div>
+          <div class="tier-example">例: 100反应 → 100×0.5 = <b>50积分</b></div>
+        </div>
+        <div class="tier-ratio">×0.5</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-icon silver">🔬</div>
+        <div class="tier-body">
+          <div class="tier-name">科研先锋 <span class="tier-multiplier silver">×0.7</span></div>
+          <div class="tier-range">📊 单周 201 ~ 400 反应</div>
+          <div class="tier-example">例: 300反应 → 300×0.7 = <b>210积分</b></div>
+        </div>
+        <div class="tier-ratio">×0.7</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-icon gold">🏆</div>
+        <div class="tier-body">
+          <div class="tier-name">科研领航者 <span class="tier-multiplier gold">×1.0</span></div>
+          <div class="tier-range">📊 单周 401+ 反应</div>
+          <div class="tier-example">例: 500反应 → 500×1.0 = <b>500积分</b></div>
+        </div>
+        <div class="tier-ratio">×1.0</div>
+      </div>
+    </div>
+
+    <!-- 关键规则 -->
+    <div class="key-info">
+      <div class="key-row">
+        <div class="key-dot pri"></div>
+        <span><b>上榜门槛</b>：单周成功反应数 ≥ <b style="color:var(--primary)">15</b> 个</span>
+      </div>
+      <div class="key-row">
+        <div class="key-dot gold"></div>
+        <span><b>积分兑换</b>：1 积分 = <b style="color:var(--gold)">¥1</b> 等值好礼</span>
+      </div>
+      <div class="key-row">
+        <div class="key-dot acc"></div>
+        <span><b>每周更新</b>：以自然周为单位统计，积分可累计兑换</span>
+      </div>
+    </div>
+
+    <!-- 二维码 -->
+    <div class="qr-section">
+      <div class="qr-text">
+        <h4>📱 扫码查询个人积分</h4>
+        <p>微信扫码 → 输入姓名+邮箱<br>即可查看您的专属积分与排名</p>
+      </div>
+      <img class="qr-img" src="qrcode_board.png" alt="扫码查询积分">
+    </div>
+
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    本活动最终解释权归擎科生物所有<br>
+    · 擎科生物郑州基地 · 2026年6月
+  </div>
+
+</div>
+</body>
+</html>
