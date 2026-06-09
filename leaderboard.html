@@ -5,146 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>擎科生物郑州基地 · 积分排行榜 · 2026年第23周</title>
 <style>
-  :root {
-    --primary: #0b3d5c;
-    --primary-light: #1a6b8a;
-    --accent: #00b4a6;
-    --gold: #d4940e;
-    --gold-light: #fff3d6;
-    --silver: #8899aa;
-    --silver-light: #edf2f6;
-    --bronze: #c47b3b;
-    --bronze-light: #fdf2e7;
-    --bg: #f5f7fa;
-    --card: #ffffff;
-    --text: #1a2332;
-    --text-secondary: #6b7788;
-    --border: #e8ecf1;
-  }
+  :root { --primary: #0b3d5c; --primary-light: #1a6b8a; --accent: #00b4a6; --gold: #d4940e; --gold-light: #fff3d6; --silver: #8899aa; --silver-light: #edf2f6; --bronze: #c47b3b; --bronze-light: #fdf2e7; --bg: #f5f7fa; --card: #ffffff; --text: #1a2332; --text-secondary: #6b7788; --border: #e8ecf1; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: linear-gradient(180deg, #e8edf5 0%, var(--bg) 100%);
-    color: var(--text);
-    min-height: 100vh;
-  }
-  .top-ribbon {
-    position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 10;
-    background: linear-gradient(90deg, var(--primary), var(--accent), var(--gold), var(--accent), var(--primary));
-    background-size: 200% 200%;
-    animation: ribbonShift 6s ease-in-out infinite;
-  }
-  @keyframes ribbonShift {
-    0%,100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(180deg, #e8edf5 0%, var(--bg) 100%); color: var(--text); min-height: 100vh; }
+  .top-ribbon { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 10; background: linear-gradient(90deg, var(--primary), var(--accent), var(--gold), var(--accent), var(--primary)); background-size: 200% 200%; animation: ribbonShift 6s ease-in-out infinite; }
+  @keyframes ribbonShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
   .container { max-width: 900px; margin: 0 auto; padding: 0 20px 40px; }
-  .hero {
-    text-align: center; padding: 40px 0 20px;
-  }
-  .hero h1 {
-    font-size: 26px; font-weight: 800; color: var(--primary);
-    letter-spacing: 2px; margin-bottom: 6px;
-  }
-  .hero .week-tag {
-    display: inline-block; background: var(--primary); color: white;
-    padding: 4px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
-    letter-spacing: 1px;
-  }
-  .summary-row {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-    margin: 24px 0 20px;
-  }
-  .sum-card {
-    background: var(--card); border-radius: 16px; padding: 20px 16px;
-    text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    transition: transform 0.2s;
-  }
-  .sum-card:hover { transform: translateY(-2px); }
+  .hero { text-align: center; padding: 40px 0 20px; }
+  .hero h1 { font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: 2px; margin-bottom: 6px; }
+  .hero .week-tag { display: inline-block; background: var(--primary); color: white; padding: 4px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; letter-spacing: 1px; }
+  .summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 24px 0 20px; }
+  .sum-card { background: var(--card); border-radius: 16px; padding: 20px 16px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
   .sum-card .sc-icon { font-size: 28px; margin-bottom: 8px; }
-  .sum-card .sc-value {
-    font-size: 28px; font-weight: 800; margin-bottom: 4px;
-  }
-  .sum-card .sc-label {
-    font-size: 13px; color: var(--text-secondary); font-weight: 500;
-  }
+  .sum-card .sc-value { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+  .sum-card .sc-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
   .sum-card.points .sc-value { color: var(--primary); }
   .sum-card.clients .sc-value { color: var(--accent); }
   .sum-card.amount .sc-value { color: var(--gold); }
-  .search-wrap {
-    margin-bottom: 16px; display: flex; gap: 10px; align-items: center;
-    flex-wrap: wrap;
-  }
-  .search-input {
-    flex: 1; min-width: 200px; border: 1.5px solid var(--border);
-    border-radius: 12px; padding: 11px 16px; font-size: 14px;
-    color: var(--text); background: var(--card); outline: none;
-    transition: all 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.03);
-  }
-  .search-input:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,107,138,0.08); }
-  .search-input::placeholder { color: #bcc3ce; }
-  .search-count {
-    font-size: 13px; color: var(--text-secondary); font-weight: 500;
-    white-space: nowrap;
-  }
-  .table-wrap {
-    background: var(--card); border-radius: 16px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.06); overflow: hidden;
-  }
-  .table-wrap-wrapper { max-height: 70vh; overflow-y: auto; }
-  .rank-table {
-    width: 100%; border-collapse: collapse; font-size: 14px;
-  }
-  .rank-table thead { position: sticky; top: 0; z-index: 2; }
-  .rank-table th {
-    background: linear-gradient(180deg, #f0f3f8, #e3e8f0);
-    padding: 12px 10px; font-size: 12px; font-weight: 700;
-    color: var(--text-secondary); text-align: center;
-    letter-spacing: 0.5px; white-space: nowrap;
-    border-bottom: 2px solid #dde2ea;
-  }
-  .rank-table th:first-child { border-radius: 16px 0 0 0; }
-  .rank-table th:last-child { border-radius: 0 16px 0 0; }
-  .rank-table td {
-    padding: 11px 10px; text-align: center; border-bottom: 1px solid #f0f2f5;
-    white-space: nowrap;
-  }
-  .rank-table tbody tr { transition: background 0.15s; }
-  .rank-table tbody tr:hover { background: #f8fafd; }
-  .rank-table .td-rank { width: 50px; }
-  .rank-table .td-name { text-align: left; font-weight: 600; color: var(--text); max-width: 90px; overflow: hidden; text-overflow: ellipsis; }
-  .rank-table .td-group { text-align: left; color: var(--text-secondary); max-width: 80px; overflow: hidden; text-overflow: ellipsis; }
-  .rank-table .td-dept { text-align: left; color: var(--text-secondary); font-size: 12px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
-  .rank-table .td-rxns { font-weight: 700; color: var(--primary); }
-  .rank-table .td-pts { font-weight: 700; }
-  .rank-table .td-value { color: var(--text-secondary); font-size: 13px; }
-  .rank-table .td-tier { font-size: 12px; }
-  .rank-medal { font-size: 20px; }
-  .rank-num { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
-  .tier-badge {
-    display: inline-block; padding: 3px 10px; border-radius: 10px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  }
-  .tier-badge.gold { background: var(--gold-light); color: #8b5e00; }
-  .tier-badge.silver { background: var(--silver-light); color: #445a6e; }
-  .tier-badge.bronze { background: var(--bronze-light); color: #8b6914; }
-  .no-result {
-    text-align: center; padding: 40px 16px; color: var(--text-secondary);
-    font-size: 14px;
-  }
-  .footer {
-    text-align: center; padding: 24px 0; font-size: 12px;
-    color: #bcc3ce; line-height: 1.8;
-  }
-  @media (max-width: 640px) {
-    .summary-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .sum-card { padding: 14px 8px; }
-    .sum-card .sc-value { font-size: 22px; }
-    .container { padding: 0 10px 30px; }
-    .rank-table { font-size: 12px; }
-    .rank-table th, .rank-table td { padding: 8px 6px; }
-    .hero h1 { font-size: 20px; }
-  }
+  .empty-notice { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+  .empty-notice .empty-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-notice .empty-text { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .empty-notice .empty-sub { font-size: 13px; }
+  .footer { text-align: center; padding: 24px 0; font-size: 12px; color: #bcc3ce; line-height: 1.8; }
+  @media (max-width: 640px) { .summary-row { grid-template-columns: repeat(3, 1fr); gap: 8px; } .sum-card { padding: 14px 8px; } .sum-card .sc-value { font-size: 22px; } .container { padding: 0 10px 30px; } .hero h1 { font-size: 20px; } }
 </style>
 </head>
 <body>
@@ -157,89 +40,29 @@
   <div class="summary-row">
     <div class="sum-card points">
       <div class="sc-icon">📊</div>
-      <div class="sc-value">2164.9</div>
+      <div class="sc-value">0</div>
       <div class="sc-label">汇总积分</div>
     </div>
     <div class="sum-card clients">
       <div class="sc-icon">👥</div>
-      <div class="sc-value">126</div>
+      <div class="sc-value">0</div>
       <div class="sc-label">达标客户</div>
     </div>
     <div class="sum-card amount">
       <div class="sc-icon">🧧</div>
-      <div class="sc-value">¥2164.9</div>
+      <div class="sc-value">¥0</div>
       <div class="sc-label">汇总金额</div>
     </div>
   </div>
-  <div class="search-wrap">
-    <input class="search-input" id="searchInput" type="text" placeholder="🔍 搜索姓名 / 单位 / 课题组 / 排名..." oninput="doFilter()">
-    <span class="search-count" id="searchCount"></span>
-  </div>
-  <div class="table-wrap">
-    <div class="table-wrap-wrapper" id="tableWrapper"></div>
+  <div class="empty-notice">
+    <div class="empty-icon">📋</div>
+    <div class="empty-text">数据更新中</div>
+    <div class="empty-sub">新一期积分数据即将上线，敬请期待</div>
   </div>
   <div class="footer">
-    📐 阶梯规则：15-300反应 ×0.3 · 301-500反应 ×0.7 · 501-+反应 ×1.0<br>
+    📐 阶梯规则：15-300反应 ×0.3 · 301-500反应 ×0.7 · 501+反应 ×1.0<br>
     门槛：单周成功反应数 ≥ 15 才计入 · 擎科生物郑州基地 · 最终解释权归擎科生物所有
   </div>
 </div>
-<script>
-var CLIENTS = [{"rank": 1, "name": "李鑫龙-s", "group": "汤继华", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1093748575@qq.com", "reactions": 421, "points": 294.7, "rate": 0.7, "value": 294.7}, {"rank": 2, "name": "邢烨", "group": "苟明月", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "xingye97@163.com", "reactions": 268, "points": 80.4, "rate": 0.3, "value": 80.4}, {"rank": 3, "name": "张延明", "group": "汤继华", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1193747306@qq.com", "reactions": 261, "points": 78.3, "rate": 0.3, "value": 78.3}, {"rank": 4, "name": "韩会阁", "group": "韩会阁", "sales": "郑州基地二区", "dept": "河南省农业科学院烟草研究所", "email": "hanhuihuige@163.com", "reactions": 233, "points": 69.9, "rate": 0.3, "value": 69.9}, {"rank": 5, "name": "陈梦瑶-S", "group": "苟明月", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "chenmengyao96@163.com", "reactions": 214, "points": 64.2, "rate": 0.3, "value": 64.2}, {"rank": 6, "name": "严小兰", "group": "汤继华", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "yanxl74@163.com", "reactions": 206, "points": 61.8, "rate": 0.3, "value": 61.8}, {"rank": 7, "name": "刘洋", "group": "汤继华", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1272390852@qq.com", "reactions": 199, "points": 59.7, "rate": 0.3, "value": 59.7}, {"rank": 8, "name": "曹健生", "group": "张学斌", "sales": "郑州基地一区", "dept": "河南大学", "email": "1534987678@qq.com", "reactions": 199, "points": 59.7, "rate": 0.3, "value": 59.7}, {"rank": 9, "name": "姚盼盼", "group": "王俊", "sales": "郑州基地二区", "dept": "神农种业实验室", "email": "soybean_shennong3@163.com", "reactions": 152, "points": 45.6, "rate": 0.3, "value": 45.6}, {"rank": 10, "name": "姚亚克-不试做失败收费", "group": "牧原宏信", "sales": "郑州基地四区", "dept": "河南兴华生物技术有限公司", "email": "201035534@qq.com", "reactions": 144, "points": 43.2, "rate": 0.3, "value": 43.2}, {"rank": 11, "name": "牛萌康", "group": "周会娜", "sales": "郑州基地四区", "dept": "中国烟草总公司郑州烟草研究院", "email": "mengk18887@163.com", "reactions": 138, "points": 41.4, "rate": 0.3, "value": 41.4}, {"rank": 12, "name": "李明达-不试做", "group": "霍毅欣", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "15011270156@163.com", "reactions": 119, "points": 35.7, "rate": 0.3, "value": 35.7}, {"rank": 13, "name": "张聪", "group": "宏信检测", "sales": "郑州基地四区", "dept": "河南宏信检测技术有限公司", "email": "hnhxfgzdjc@163.com", "reactions": 116, "points": 34.8, "rate": 0.3, "value": 34.8}, {"rank": 14, "name": "何洲", "group": "嘉检医学", "sales": "郑州基地三区", "dept": "广州嘉检医学检测有限公司", "email": "jiajian-zdssys@amcarelab.com.cn", "reactions": 109, "points": 32.7, "rate": 0.3, "value": 32.7}, {"rank": 15, "name": "李天亮", "group": "赵特", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "litianliang36@163.com", "reactions": 105, "points": 31.5, "rate": 0.3, "value": 31.5}, {"rank": 16, "name": "胡俊亚", "group": "武鹏", "sales": "郑州基地三区", "dept": "郑州大学", "email": "2310218808@qq.com", "reactions": 105, "points": 31.5, "rate": 0.3, "value": 31.5}, {"rank": 17, "name": "罗兵", "group": "河南宏信检测", "sales": "郑州基地四区", "dept": "河南宏信检测技术有限公司", "email": "luobing1@muyuanfoods.com", "reactions": 97, "points": 29.1, "rate": 0.3, "value": 29.1}, {"rank": 18, "name": "位曙光", "group": "霍玉奇", "sales": "郑州基地三区", "dept": "郑州市第六人民医院（郑州市结核病防治所）", "email": "1661064084@qq.com", "reactions": 93, "points": 27.9, "rate": 0.3, "value": 27.9}, {"rank": 19, "name": "王旭燕", "group": "陈敏", "sales": "郑州基地一区", "dept": "河南大学", "email": "wxy15702658462@163.com", "reactions": 91, "points": 27.3, "rate": 0.3, "value": 27.3}, {"rank": 20, "name": "周皓宇", "group": "叶佑丕", "sales": "郑州基地三区", "dept": "郑州大学", "email": "hy-zhou17@tsinghua.org.cn", "reactions": 79, "points": 23.7, "rate": 0.3, "value": 23.7}, {"rank": 21, "name": "韩艺文-不试做", "group": "霍毅欣", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "hanyiwen@muyuanlab.com", "reactions": 78, "points": 23.4, "rate": 0.3, "value": 23.4}, {"rank": 22, "name": "苗育梁", "group": "牧原宏信", "sales": "郑州基地四区", "dept": "河南兴华生物技术有限公司", "email": "1418717074@qq.com", "reactions": 71, "points": 21.3, "rate": 0.3, "value": 21.3}, {"rank": 23, "name": "张港傲", "group": "徐馨", "sales": "郑州基地四区", "dept": "中国烟草总公司郑州烟草研究院", "email": "623045993@qq.com", "reactions": 67, "points": 20.1, "rate": 0.3, "value": 20.1}, {"rank": 24, "name": "郭睿祺", "group": "肖光辉", "sales": "郑州基地一区", "dept": "河南大学", "email": "15511776676@163.com", "reactions": 65, "points": 19.5, "rate": 0.3, "value": 19.5}, {"rank": 25, "name": "梁晓敏", "group": "杨藏歌", "sales": "郑州基地四区", "dept": "东营市垦利牧原农牧有限公司", "email": "646272943@qq.com", "reactions": 64, "points": 19.2, "rate": 0.3, "value": 19.2}, {"rank": 26, "name": "李亚", "group": "雷博", "sales": "郑州基地三区", "dept": "河南省人民医院", "email": "1350722581@qq.com", "reactions": 63, "points": 18.9, "rate": 0.3, "value": 18.9}, {"rank": 27, "name": "董浩哲", "group": "霍毅欣", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "donghaozhe0607@163.com", "reactions": 62, "points": 18.6, "rate": 0.3, "value": 18.6}, {"rank": 28, "name": "刘雨欣", "group": "河南宏信检测", "sales": "郑州基地四区", "dept": "河南宏信检测技术有限公司", "email": "1308458762@qq.com", "reactions": 60, "points": 18.0, "rate": 0.3, "value": 18.0}, {"rank": 29, "name": "李可铖-不试做", "group": "霍毅欣", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "372527883@qq.com", "reactions": 58, "points": 17.4, "rate": 0.3, "value": 17.4}, {"rank": 30, "name": "梁飞", "group": "张学斌", "sales": "郑州基地一区", "dept": "河南大学", "email": "1264284076@qq.com", "reactions": 56, "points": 16.8, "rate": 0.3, "value": 16.8}, {"rank": 31, "name": "黄晓静", "group": "黄晓静", "sales": "郑州基地二区", "dept": "河南省农业科学院动物疫病防控研究所（河南省农业科学院动物免疫学重点实验室）", "email": "hxjynl2017@163.com", "reactions": 56, "points": 16.8, "rate": 0.3, "value": 16.8}, {"rank": 32, "name": "SawairaJadoon", "group": "王俊", "sales": "郑州基地二区", "dept": "神农种业实验室", "email": "sawairajadoon@163.com", "reactions": 56, "points": 16.8, "rate": 0.3, "value": 16.8}, {"rank": 33, "name": "许默含", "group": "郑向东", "sales": "郑州基地三区", "dept": "郑州大学", "email": "xmh08022023@163.com", "reactions": 55, "points": 16.5, "rate": 0.3, "value": 16.5}, {"rank": 34, "name": "张建", "group": "王强", "sales": "郑州基地一区", "dept": "河南大学", "email": "zj13589043051@126.com", "reactions": 54, "points": 16.2, "rate": 0.3, "value": 16.2}, {"rank": 35, "name": "郭世伦", "group": "戴桂馥", "sales": "郑州基地三区", "dept": "郑州大学", "email": "16627664100@163.com", "reactions": 51, "points": 15.3, "rate": 0.3, "value": 15.3}, {"rank": 36, "name": "付明雪", "group": "何盛莲", "sales": "郑州基地二区", "dept": "河南省农业科学院", "email": "1620545655@qq.com", "reactions": 50, "points": 15.0, "rate": 0.3, "value": 15.0}, {"rank": 37, "name": "陈茜", "group": "张学斌", "sales": "郑州基地一区", "dept": "河南大学", "email": "18087480184@163.com", "reactions": 50, "points": 15.0, "rate": 0.3, "value": 15.0}, {"rank": 38, "name": "武振东", "group": "韩锁义", "sales": "郑州基地二区", "dept": "河南省作物分子育种研究院", "email": "15090061080@163.com", "reactions": 48, "points": 14.4, "rate": 0.3, "value": 14.4}, {"rank": 39, "name": "姚佳", "group": "李继东", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "205239413@qq.com", "reactions": 47, "points": 14.1, "rate": 0.3, "value": 14.1}, {"rank": 40, "name": "吴琪琪-s", "group": "赵翔", "sales": "郑州基地一区", "dept": "河南大学", "email": "wuqiqi9909@163.com", "reactions": 46, "points": 13.8, "rate": 0.3, "value": 13.8}, {"rank": 41, "name": "解赛娅", "group": "江秉华", "sales": "郑州基地三区", "dept": "郑州大学", "email": "x2036978394@163.com", "reactions": 45, "points": 13.5, "rate": 0.3, "value": 13.5}, {"rank": 42, "name": "段培枫-不试做", "group": "霍毅欣", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "15552074990@163.com", "reactions": 44, "points": 13.2, "rate": 0.3, "value": 13.2}, {"rank": 43, "name": "胡可", "group": "陆平利", "sales": "郑州基地一区", "dept": "河南大学", "email": "840956557@qq.com", "reactions": 43, "points": 12.9, "rate": 0.3, "value": 12.9}, {"rank": 44, "name": "翟瑶", "group": "牧原宏信", "sales": "郑州基地四区", "dept": "河南兴华生物技术有限公司", "email": "myjjjj123456782@163.com", "reactions": 42, "points": 12.6, "rate": 0.3, "value": 12.6}, {"rank": 45, "name": "董迁迁", "group": "杨丽荣", "sales": "郑州基地二区", "dept": "河南省农业科学院植物保护研究所", "email": "444820270@qq.com", "reactions": 41, "points": 12.3, "rate": 0.3, "value": 12.3}, {"rank": 46, "name": "张怡婷", "group": "李营", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2745549160@qq.com", "reactions": 41, "points": 12.3, "rate": 0.3, "value": 12.3}, {"rank": 47, "name": "周帅", "group": "陈松", "sales": "郑州基地三区", "dept": "河南省人民医院", "email": "237999718@qq.com", "reactions": 41, "points": 12.3, "rate": 0.3, "value": 12.3}, {"rank": 48, "name": "黄婧h", "group": "张学斌", "sales": "郑州基地一区", "dept": "河南大学", "email": "591189294@qq.com", "reactions": 40, "points": 12.0, "rate": 0.3, "value": 12.0}, {"rank": 49, "name": "刘凯璐", "group": "李营-郑州", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2807495783@qq.com", "reactions": 40, "points": 12.0, "rate": 0.3, "value": 12.0}, {"rank": 50, "name": "任怡冰", "group": "张会勇", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "3108622919@qq.com", "reactions": 38, "points": 11.4, "rate": 0.3, "value": 11.4}, {"rank": 51, "name": "李航雨", "group": "肖光辉", "sales": "郑州基地一区", "dept": "河南大学", "email": "2597374521@qq.com", "reactions": 38, "points": 11.4, "rate": 0.3, "value": 11.4}, {"rank": 52, "name": "牛文斌", "group": "李云河", "sales": "郑州基地一区", "dept": "河南大学", "email": "483507198@qq.com", "reactions": 38, "points": 11.4, "rate": 0.3, "value": 11.4}, {"rank": 53, "name": "丛俪娟", "group": "张小敏", "sales": "郑州基地一区", "dept": "河南大学", "email": "15842530635@163.com", "reactions": 37, "points": 11.1, "rate": 0.3, "value": 11.1}, {"rank": 54, "name": "刘洁", "group": "闫大伟", "sales": "郑州基地一区", "dept": "河南大学", "email": "liujie19900115@yeah.net", "reactions": 36, "points": 10.8, "rate": 0.3, "value": 10.8}, {"rank": 55, "name": "镐婉婷", "group": "李云河", "sales": "郑州基地一区", "dept": "河南大学", "email": "2518864368@qq.com", "reactions": 35, "points": 10.5, "rate": 0.3, "value": 10.5}, {"rank": 56, "name": "谷雨佳", "group": "蔡应繁", "sales": "郑州基地一区", "dept": "河南大学", "email": "18096878639@163.com", "reactions": 35, "points": 10.5, "rate": 0.3, "value": 10.5}, {"rank": 57, "name": "高慕洁", "group": "邓传良", "sales": "郑州基地四区", "dept": "河南师范大学", "email": "242648675@qq.com", "reactions": 33, "points": 9.9, "rate": 0.3, "value": 9.9}, {"rank": 58, "name": "苑艺明", "group": "李玉玲", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "yym101204@163.com", "reactions": 33, "points": 9.9, "rate": 0.3, "value": 9.9}, {"rank": 59, "name": "王佳音", "group": "安国勇", "sales": "郑州基地一区", "dept": "河南大学", "email": "1196378512@qq.com", "reactions": 33, "points": 9.9, "rate": 0.3, "value": 9.9}, {"rank": 60, "name": "刘祎岚", "group": "娄海伟", "sales": "郑州基地三区", "dept": "河南工业大学", "email": "liuyilan0227@163.com", "reactions": 33, "points": 9.9, "rate": 0.3, "value": 9.9}, {"rank": 61, "name": "牛风娇", "group": "王桂凤", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2656303661@qq.com", "reactions": 32, "points": 9.6, "rate": 0.3, "value": 9.6}, {"rank": 62, "name": "李甜甜", "group": "郑向东", "sales": "郑州基地三区", "dept": "郑州大学", "email": "ltt3081114958@163.com", "reactions": 32, "points": 9.6, "rate": 0.3, "value": 9.6}, {"rank": 63, "name": "岳毅", "group": "李晟磊", "sales": "郑州基地三区", "dept": "郑州大学第一附属医院", "email": "yueyuedoc@163.com", "reactions": 31, "points": 9.3, "rate": 0.3, "value": 9.3}, {"rank": 64, "name": "常亦昆", "group": "万香波", "sales": "郑州基地三区", "dept": "郑州大学第一附属医院", "email": "1278100885@qq.com", "reactions": 31, "points": 9.3, "rate": 0.3, "value": 9.3}, {"rank": 65, "name": "张文才", "group": "河南宏信检测", "sales": "郑州基地四区", "dept": "河南宏信检测技术有限公司", "email": "zhangwencai1@muyuanfoods.com", "reactions": 30, "points": 9.0, "rate": 0.3, "value": 9.0}, {"rank": 66, "name": "陈梦娜-不试做", "group": "霍毅欣", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "2061252265@qq.com", "reactions": 30, "points": 9.0, "rate": 0.3, "value": 9.0}, {"rank": 67, "name": "张静", "group": "张静", "sales": "郑州基地一区", "dept": "河南大学", "email": "jing4098@163.com", "reactions": 29, "points": 8.7, "rate": 0.3, "value": 8.7}, {"rank": 68, "name": "杨凯", "group": "乌云塔娜", "sales": "郑州基地二区", "dept": "中国林业科学研究院经济林研究所", "email": "3513636257@qq.com", "reactions": 28, "points": 8.4, "rate": 0.3, "value": 8.4}, {"rank": 69, "name": "张婧娴", "group": "魏勇军", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "1976029402@qq.com", "reactions": 28, "points": 8.4, "rate": 0.3, "value": 8.4}, {"rank": 70, "name": "宋林虎", "group": "杨建平", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "852947547@qq.com", "reactions": 28, "points": 8.4, "rate": 0.3, "value": 8.4}, {"rank": 71, "name": "孔维秀", "group": "刘文轩", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "kongwx0512@163.com", "reactions": 28, "points": 8.4, "rate": 0.3, "value": 8.4}, {"rank": 72, "name": "邓鹏", "group": "牧原宏信", "sales": "郑州基地四区", "dept": "河南兴华生物技术有限公司", "email": "1092179357@qq.com", "reactions": 28, "points": 8.4, "rate": 0.3, "value": 8.4}, {"rank": 73, "name": "崔鸿飞", "group": "陆平利", "sales": "郑州基地一区", "dept": "河南大学", "email": "xcuihf@163.com", "reactions": 27, "points": 8.1, "rate": 0.3, "value": 8.1}, {"rank": 74, "name": "田雨纯", "group": "苟明月", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "13703219077@163.com", "reactions": 27, "points": 8.1, "rate": 0.3, "value": 8.1}, {"rank": 75, "name": "郭靖", "group": "王桂凤", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "guojing202112@163.com", "reactions": 26, "points": 7.8, "rate": 0.3, "value": 7.8}, {"rank": 76, "name": "赵永财", "group": "肖光辉", "sales": "郑州基地一区", "dept": "河南大学", "email": "1060355297@qq.com", "reactions": 25, "points": 7.5, "rate": 0.3, "value": 7.5}, {"rank": 77, "name": "赵燕群", "group": "赵燕群", "sales": "郑州基地一区", "dept": "河南大学", "email": "552446891@qq.com", "reactions": 25, "points": 7.5, "rate": 0.3, "value": 7.5}, {"rank": 78, "name": "陈佳", "group": "万香波", "sales": "郑州基地三区", "dept": "郑州大学第一附属医院", "email": "chenjia6457@163.com", "reactions": 25, "points": 7.5, "rate": 0.3, "value": 7.5}, {"rank": 79, "name": "陈建", "group": "陈建", "sales": "郑州基地四区", "dept": "河南科技大学", "email": "t1033866599@qq.com", "reactions": 24, "points": 7.2, "rate": 0.3, "value": 7.2}, {"rank": 80, "name": "苗润萱", "group": "肖光辉", "sales": "郑州基地一区", "dept": "河南大学", "email": "2023945050@qq.com", "reactions": 24, "points": 7.2, "rate": 0.3, "value": 7.2}, {"rank": 81, "name": "孙冉冉", "group": "陈鲤翔", "sales": "郑州基地三区", "dept": "郑州大学", "email": "1764776385@qq.com", "reactions": 24, "points": 7.2, "rate": 0.3, "value": 7.2}, {"rank": 82, "name": "赵育蓉", "group": "朱平平", "sales": "郑州基地三区", "dept": "郑州大学", "email": "1399686128@qq.com", "reactions": 23, "points": 6.9, "rate": 0.3, "value": 6.9}, {"rank": 83, "name": "马恒恒", "group": "河南宏信检测", "sales": "郑州基地四区", "dept": "河南宏信检测技术有限公司", "email": "3267678448@qq.com", "reactions": 22, "points": 6.6, "rate": 0.3, "value": 6.6}, {"rank": 84, "name": "刘康林", "group": "王俊", "sales": "郑州基地二区", "dept": "神农种业实验室", "email": "soybean_shennong6@163.com", "reactions": 22, "points": 6.6, "rate": 0.3, "value": 6.6}, {"rank": 85, "name": "沈隽韬", "group": "王莹莹", "sales": "郑州基地三区", "dept": "河南工业大学", "email": "2548085178@qq.com", "reactions": 21, "points": 6.3, "rate": 0.3, "value": 6.3}, {"rank": 86, "name": "杨迅", "group": "刘文轩", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2144529874@qq.com", "reactions": 21, "points": 6.3, "rate": 0.3, "value": 6.3}, {"rank": 87, "name": "刘鑫荣", "group": "邓传良", "sales": "郑州基地四区", "dept": "河南师范大学", "email": "3156529115@qq.com", "reactions": 21, "points": 6.3, "rate": 0.3, "value": 6.3}, {"rank": 88, "name": "席烜朝", "group": "胡斌", "sales": "郑州基地四区", "dept": "河南科技学院", "email": "2433014104@qq.com", "reactions": 21, "points": 6.3, "rate": 0.3, "value": 6.3}, {"rank": 89, "name": "刘若晴", "group": "安光辉", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1255204778@qq.com", "reactions": 20, "points": 6.0, "rate": 0.3, "value": 6.0}, {"rank": 90, "name": "周小杰", "group": "李新生", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1397166142@qq.com", "reactions": 20, "points": 6.0, "rate": 0.3, "value": 6.0}, {"rank": 91, "name": "周旭娜", "group": "丁俊强", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1559495742@qq.com", "reactions": 19, "points": 5.7, "rate": 0.3, "value": 5.7}, {"rank": 92, "name": "王梦", "group": "郑旭", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2771514077@qq.com", "reactions": 19, "points": 5.7, "rate": 0.3, "value": 5.7}, {"rank": 93, "name": "王俊阳", "group": "王俊阳", "sales": "郑州基地三区", "dept": "郑州大学", "email": "wangjunyang@zzu.edu.cn", "reactions": 19, "points": 5.7, "rate": 0.3, "value": 5.7}, {"rank": 94, "name": "张银鸽", "group": "杨丽荣", "sales": "郑州基地二区", "dept": "河南省农业科学院植物保护研究所", "email": "diy907483139@163.com", "reactions": 19, "points": 5.7, "rate": 0.3, "value": 5.7}, {"rank": 95, "name": "周梦菡", "group": "韩世充", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1962635444@qq.com", "reactions": 19, "points": 5.7, "rate": 0.3, "value": 5.7}, {"rank": 96, "name": "邢凯迪", "group": "王强", "sales": "郑州基地一区", "dept": "河南大学", "email": "1428537771@qq.com", "reactions": 19, "points": 5.7, "rate": 0.3, "value": 5.7}, {"rank": 97, "name": "任月明", "group": "刘文轩", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "r18317591827@163.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 98, "name": "李媛", "group": "俞振纲", "sales": "郑州基地三区", "dept": "郑州大学", "email": "abcd18337990792@163.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 99, "name": "马雨珠", "group": "王风芹", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2468725659@qq.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 100, "name": "赵晨阳", "group": "苟明月", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1220993256@qq.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 101, "name": "刘燕坤", "group": "张科春", "sales": "郑州基地四区", "dept": "牧原实验室", "email": "yankunliulyk@163.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 102, "name": "焦珂梦", "group": "那日松", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "j548654@163.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 103, "name": "李毅娜", "group": "武鹏", "sales": "郑州基地三区", "dept": "郑州大学", "email": "17837167607@163.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 104, "name": "潘燕芊芊", "group": "乌云塔娜", "sales": "郑州基地二区", "dept": "中国林业科学研究院经济林研究所", "email": "862716442@qq.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 105, "name": "谢小东", "group": "谢小东", "sales": "郑州基地四区", "dept": "中国烟草总公司郑州烟草研究院", "email": "dd-99@163.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 106, "name": "黄亚娉", "group": "赵翔", "sales": "郑州基地一区", "dept": "河南大学", "email": "2021733894@qq.com", "reactions": 18, "points": 5.4, "rate": 0.3, "value": 5.4}, {"rank": 107, "name": "张龙", "group": "李会勇", "sales": "郑州基地二区", "dept": "河南省农业科学院", "email": "651850826@qq.com", "reactions": 17, "points": 5.1, "rate": 0.3, "value": 5.1}, {"rank": 108, "name": "王森浩", "group": "郑向东", "sales": "郑州基地三区", "dept": "郑州大学", "email": "2574306489@qq.com", "reactions": 17, "points": 5.1, "rate": 0.3, "value": 5.1}, {"rank": 109, "name": "王姚姚", "group": "河南中源裕泽生物科技有限公司", "sales": "郑州基地四区", "dept": "河南中源裕泽生物科技有限公司", "email": "2484750275@qq.com", "reactions": 17, "points": 5.1, "rate": 0.3, "value": 5.1}, {"rank": 110, "name": "闫凯钰", "group": "张继冉", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "3137868676@qq.com", "reactions": 17, "points": 5.1, "rate": 0.3, "value": 5.1}, {"rank": 111, "name": "邢沛昀", "group": "余立扬", "sales": "郑州基地三区", "dept": "郑州大学", "email": "xingpeiyun@163.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 112, "name": "王兵阳", "group": "苟明月", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "18639819005@163.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 113, "name": "杨伟程", "group": "杨路明", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2161566240@qq.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 114, "name": "滕彬", "group": "翟征远", "sales": "郑州基地四区", "dept": "中原食品实验室", "email": "13939862168@163.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 115, "name": "郭心如", "group": "刘文成", "sales": "郑州基地一区", "dept": "河南大学", "email": "luckygxr@163.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 116, "name": "王笑冉", "group": "苗明三", "sales": "郑州基地二区", "dept": "河南中医药大学", "email": "18310638773@126.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 117, "name": "李甜", "group": "魏勇军-郑大", "sales": "郑州基地三区", "dept": "郑州大学", "email": "1430806846@qq.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 118, "name": "褚梦晴", "group": "王道杰", "sales": "郑州基地一区", "dept": "河南大学", "email": "3033616397@qq.com", "reactions": 16, "points": 4.8, "rate": 0.3, "value": 4.8}, {"rank": 119, "name": "刘官清", "group": "王海娇", "sales": "郑州基地一区", "dept": "河南大学", "email": "1844496970@qq.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}, {"rank": 120, "name": "朱茂盛", "group": "苟明月", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "2693973076@qq.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}, {"rank": 121, "name": "王月季", "group": "安光辉", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1318844756@qq.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}, {"rank": 122, "name": "盛亚蕊", "group": "王庆东", "sales": "郑州基地三区", "dept": "郑州大学", "email": "15238529781@163.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}, {"rank": 123, "name": "陶雪茹", "group": "唐文帅", "sales": "郑州基地三区", "dept": "郑州大学", "email": "2147355589@qq.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}, {"rank": 124, "name": "程艳红", "group": "苟明月", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1985453225@qq.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}, {"rank": 125, "name": "陈雨桐", "group": "杨路明", "sales": "郑州基地二区", "dept": "河南农业大学", "email": "1799648397@qq.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}, {"rank": 126, "name": "张海晴", "group": "曹更生", "sales": "郑州基地一区", "dept": "河南大学", "email": "784725753@qq.com", "reactions": 15, "points": 4.5, "rate": 0.3, "value": 4.5}];
-function escapeHtml(s) {
-  if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function doFilter() {
-  var kw = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-  var filtered = CLIENTS.slice();
-  if (kw) {
-    filtered = filtered.filter(function(c) {
-      return (c.name || '').toLowerCase().indexOf(kw) !== -1
-        || (c.dept || '').toLowerCase().indexOf(kw) !== -1
-        || (c.group || '').toLowerCase().indexOf(kw) !== -1
-        || String(c.rank).indexOf(kw) !== -1;
-    });
-  }
-  document.getElementById('searchCount').textContent = '显示 ' + filtered.length + ' / ' + CLIENTS.length + ' 人';
-  renderTable(filtered);
-}
-function renderTable(list) {
-  var wrap = document.getElementById('tableWrapper');
-  if (list.length === 0) {
-    wrap.innerHTML = '<div class="no-result">😕 没有匹配的记录</div>';
-    return;
-  }
-  var html = '<table class="rank-table"><thead><tr>';
-  html += '<th>排名</th><th>姓名</th><th>课题组</th><th>单位</th><th>片区</th><th>反应数</th><th>积分</th><th>金额</th><th>档位</th>';
-  html += '</tr></thead><tbody>';
-  for (var i = 0; i < list.length; i++) {
-    var c = list[i];
-    var tierEmoji = c.rate >= 1.0 ? '🏆' : (c.rate >= 0.7 ? '🔬' : '🧬');
-    var tierName = c.rate >= 1.0 ? '领航者' : (c.rate >= 0.7 ? '先锋' : '能手');
-    var tierClass = c.rate >= 1.0 ? 'gold' : (c.rate >= 0.7 ? 'silver' : 'bronze');
-    var rankHtml;
-    if (c.rank === 1) rankHtml = '<span class="rank-medal">🥇</span>';
-    else if (c.rank === 2) rankHtml = '<span class="rank-medal">🥈</span>';
-    else if (c.rank === 3) rankHtml = '<span class="rank-medal">🥉</span>';
-    else rankHtml = '<span class="rank-num">' + c.rank + '</span>';
-    var ptsColor = c.rate >= 1.0 ? '#8b5e00' : (c.rate >= 0.7 ? '#445a6e' : '#8b6914');
-    html += '<tr>';
-    html += '<td class="td-rank">' + rankHtml + '</td>';
-    html += '<td class="td-name" title="' + escapeHtml(c.name) + '">' + escapeHtml(c.name) + '</td>';
-    html += '<td class="td-group" title="' + escapeHtml(c.group || '') + '">' + escapeHtml(c.group || '-') + '</td>';
-    html += '<td class="td-dept" title="' + escapeHtml(c.dept || '') + '">' + escapeHtml(c.dept || '-') + '</td>';
-    html += '<td style="font-size:12px;color:var(--text-secondary)">' + escapeHtml(c.sales || '-') + '</td>';
-    html += '<td class="td-rxns">' + c.reactions + '</td>';
-    html += '<td class="td-pts" style="color:' + ptsColor + '">' + c.points + '</td>';
-    html += '<td class="td-value">¥' + c.value.toFixed(1) + '</td>';
-    html += '<td class="td-tier"><span class="tier-badge ' + tierClass + '">' + tierEmoji + ' ' + tierName + '</span></td>';
-    html += '</tr>';
-  }
-  html += '</tbody></table>';
-  wrap.innerHTML = html;
-}
-document.getElementById('searchCount').textContent = '共 ' + CLIENTS.length + ' 人上榜';
-renderTable(CLIENTS);
-</script>
 </body>
 </html>
